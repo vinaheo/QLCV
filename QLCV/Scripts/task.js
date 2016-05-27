@@ -176,9 +176,10 @@ $("#btnAdd").click(function () {
                             + "<input name='pcs[" + i + "].NOIDUNG' value='" + noidungphancong + "' class='noidungphancong hidden' id='txtNoiDungPhanCong" + i + "'/>"
                             + "<input name='pcs[" + i + "].NGAYBATDAU' value='" + ngaybatdau + "' class='ngaybatdau hidden' id='txtNgayBatDau" + i + "'/>"
                             + "<input name='pcs[" + i + "].NGAYKETTHUC' value='" + ngayketthuc + "' class='ngayketthuc hidden' id='txtNgayKetThuc" + i + "'/>"
+                            + "<input name='pcs[" + i + "].IDTRANGTHAI' value='1' class='trangthai hidden' id='txtTrangThai" + i + "'/>"
                             + "<input name='listIDNguoiNhans[" + i + "]' value='" + listIdNguoiNhans + "' class='nguoinhan hidden' id='txtNguoiNhans" + i + "'/>"
 
-                            + "<span style='margin-left: 50px' class='glyphicon glyphicon-remove btnRemovePC' onclick='removepc(" + i + ")' ></span>"
+                            + "<span style='margin-left: 50px' class='glyphicon glyphicon-trash btnRemovePC' onclick='removepc(" + i + ")' ></span>"
                             + "<div id='modalPhanCong" + i + "' class='modal fade modalPhanCong' role='dialog'>"
                             + "<div class='modal-dialog'>"
                                 + "<!-- Modal content-->"
