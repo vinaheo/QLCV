@@ -1,0 +1,137 @@
+﻿@model QLCV.Models.Task.TaskInsertViewModel
+@using QLCV.DAO
+@{
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+<div id="page-wrapper">
+    @{
+        NGUOIDUNG userLogin = Session["USER"] as NGUOIDUNG;
+    } 
+    <script type="text/javascript">
+        var listNguoiDungsByViewBag = @Html.Raw(
+        Json.Encode(
+         ((IEnumerable<NGUOIDUNG>)ViewBag.NDs).Select(user => new
+            {
+                userId = user.ID,
+                userTen = user.TENNGUOIDUNG
+            })
+        )
+    )
+        //alert(array[0].userTen);
+    </script>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Insert task</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    @using (Html.BeginForm("Insert", "Task", FormMethod.Post, new { @role = "form", @class = "form-horizontal", enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default" style="border: none">
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Tiêu đề</label>
+                            @Html.ValidationMessage("Error")
+                            @Html.TextBoxFor(m => m.tieude, new { @class = "form-control" })
+                            <input name="idNguoiTao" value="@userLogin.ID" class="hidden"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Nội dung chung</label>
+                            @Html.TextAreaFor(m => m.noidung, new { @class = "form-control", @rows = "3" })
+                            @*<textarea class="form-control" rows="3"></textarea>*@
+                        </div>
+                        <div class="form-group">
+                            <label>Chi tiết</label>
+                            @*<p id="numItem">0</p>*@
+                            <input name="numPC" id="numItem" value="0" class="hidden" />
+                            @*@Html.TextBoxFor(m => m.numPC, new { @class = "form-control", @id = "numItem" })*@
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalAddPhanCong">
+                                        <span class="glyphicon glyphicon-plus"></span> Thêm chi tiết
+                                    </button>
+                                    <div id="modalAddPhanCong" class="modal fade" role="dialog" style="">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content" style="position:relative">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Chi tiết phân công</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label>Tên phân công</label>
+                                                        <input class="form-control" id="txtTenPhanCong">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Nội dung phân công</label>
+                                                        <textarea class="form-control" rows="3" id="txtNoiDungPhanCong"></textarea>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Ngày bắt đầu</label>
+                                                        <div><input type='text' class="form-control dpNgayBatDau" id='dpNgayBatDau' /></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Ngày kết thúc</label>
+                                                        <div><input type='text' class="form-control dpNgayKetThuc" id='dpNgayKetThuc' /></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Phân công cho</label>
+                                                        @*<textarea id="taNguoiNhan" rows="1" style="border-radius: 3px" class="textext"></textarea>*@
+                                                        <div>
+                                                            <select id="taNguoiNhan" multiple="multiple" class="form-control slNguoiNhans" style="width: 100%">
+                                                                <!--The following blank option must be added to allow select2 to set the placeholder text-->
+                                                                @{
+        DAO_User dao_user = new DAO_User();
+        List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+        foreach (NGUOIDUNG nd in nds)
+        {
+            <option value="@nd.ID">@nd.TENNGUOIDUNG</option>
+        }
+                                                                }
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" id="btnAdd">Add</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <ul id="listchitiet"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tập tin đính kèm</label>
+                            @Html.TextBoxFor(m => m.taptin, "", new { type = "file" })
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row" style="text-align: right">
+            <div class="col-lg-12">
+                <div style="border-top: 1px solid #eee; padding-top: 9px">
+                    <button type="submit" class="btn btn-success" id="btnInsertTask" onclick="return confirm('Bạn có muốn tạo công việc này không?');">Tạo</button>
+                </div>
+            </div>
+        </div>
+    <!-- /.row -->
+    }
+
+</div>
+<!-- /#page-wrapper -->

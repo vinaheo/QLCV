@@ -1,0 +1,867 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLCVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BAOCAOCONGVIEC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDNGUOITAO" Type="int" />
+          <Property Name="IDCONGVIEC" Type="int" />
+          <Property Name="IDPHANCONG" Type="int" />
+          <Property Name="NOIDUNG" Type="nvarchar(max)" />
+          <Property Name="NGAYTAO" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BINHLUAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDNGUOITAO" Type="int" />
+          <Property Name="IDCONGVIEC" Type="int" />
+          <Property Name="NOIDUNG" Type="nvarchar(max)" />
+          <Property Name="NGAYTAO" Type="datetime" />
+          <Property Name="NGAYCAPNHAT" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CHUCDANH">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TENCHUCDANH" Type="nvarchar(max)" />
+          <Property Name="TENVIETTAT" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TENCHUCVU" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CONGVIEC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDNGUOITAO" Type="int" />
+          <Property Name="TIEUDE" Type="nvarchar(max)" />
+          <Property Name="NOIDUNG" Type="nvarchar(max)" />
+          <Property Name="GHICHU" Type="nvarchar(max)" />
+          <Property Name="NGAYTAO" Type="datetime" />
+          <Property Name="HOANTHANH" Type="bit" />
+          <Property Name="IDDANGCONGVIEC" Type="int" />
+          <Property Name="NGAYCAPNHAT" Type="datetime" />
+          <Property Name="XOA" Type="bit" />
+          <Property Name="PARENTID" Type="int" />
+          <Property Name="TAPTIN" Type="nvarchar(max)" />
+          <Property Name="THUMUC" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DANGCONGVIEC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TEN" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DANGPHANCONG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TEN" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NGUOIDUNG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TENDANGNHAP" Type="nvarchar" MaxLength="50" />
+          <Property Name="MATKHAU" Type="nvarchar(max)" />
+          <Property Name="TENNGUOIDUNG" Type="nvarchar(max)" />
+          <Property Name="EMAIL" Type="nvarchar(max)" />
+          <Property Name="TRANGTHAI" Type="bit" />
+          <Property Name="NGAYTAO" Type="datetime" />
+          <Property Name="IDPHONGBAN" Type="int" />
+          <Property Name="IDCHUCDANH" Type="int" />
+          <Property Name="IDCHUCVU" Type="int" />
+        </EntityType>
+        <EntityType Name="PHANCONG">
+          <Key>
+            <PropertyRef Name="IDPHANCONG" />
+            <PropertyRef Name="IDNGUOINHAN" />
+            <PropertyRef Name="IDCONGVIEC" />
+          </Key>
+          <Property Name="IDPHANCONG" Type="int" Nullable="false" />
+          <Property Name="IDNGUOINHAN" Type="int" Nullable="false" />
+          <Property Name="IDCONGVIEC" Type="int" Nullable="false" />
+          <Property Name="TENPHANCONG" Type="nvarchar(max)" />
+          <Property Name="IDTRANGTHAI" Type="int" />
+          <Property Name="IDDANGPHANCONG" Type="int" />
+          <Property Name="NOIDUNG" Type="nvarchar(max)" />
+          <Property Name="GHICHU" Type="nvarchar(max)" />
+          <Property Name="NGAYCAPNHAT" Type="datetime" />
+          <Property Name="NGAYBATDAU" Type="datetime" />
+          <Property Name="NGAYKETTHUC" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PHONGBAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TENPHONG" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TRANGTHAI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TEN" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="fk_BAOCAO_CONGVIEC">
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="0..1" />
+          <End Role="BAOCAOCONGVIEC" Type="Self.BAOCAOCONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BAOCAOCONGVIEC">
+              <PropertyRef Name="IDCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BAOCAO_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="BAOCAOCONGVIEC" Type="Self.BAOCAOCONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BAOCAOCONGVIEC">
+              <PropertyRef Name="IDNGUOITAO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BINHLUAN_CONGVIEC">
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="0..1" />
+          <End Role="BINHLUAN" Type="Self.BINHLUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BINHLUAN">
+              <PropertyRef Name="IDCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BINHLUAN_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="BINHLUAN" Type="Self.BINHLUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BINHLUAN">
+              <PropertyRef Name="IDNGUOITAO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CONGVIEC_DANGCONGVIEC">
+          <End Role="DANGCONGVIEC" Type="Self.DANGCONGVIEC" Multiplicity="0..1" />
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DANGCONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONGVIEC">
+              <PropertyRef Name="IDDANGCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CONGVIEC_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONGVIEC">
+              <PropertyRef Name="IDNGUOITAO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_CHUCDANH">
+          <End Role="CHUCDANH" Type="Self.CHUCDANH" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCDANH">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDCHUCDANH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_CHUCVU">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDCHUCVU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_PHONGBAN">
+          <End Role="PHONGBAN" Type="Self.PHONGBAN" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONGBAN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDPHONGBAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANCONG_CONGVIEC">
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANCONG_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDNGUOINHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANCONG_TRANGTHAI">
+          <End Role="TRANGTHAI" Type="Self.TRANGTHAI" Multiplicity="0..1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRANGTHAI">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDTRANGTHAI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANDONG_DANGPHANCONG">
+          <End Role="DANGPHANCONG" Type="Self.DANGPHANCONG" Multiplicity="0..1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DANGPHANCONG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDDANGPHANCONG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLCVModelStoreContainer">
+          <EntitySet Name="BAOCAOCONGVIEC" EntityType="Self.BAOCAOCONGVIEC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BINHLUAN" EntityType="Self.BINHLUAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHUCDANH" EntityType="Self.CHUCDANH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHUCVU" EntityType="Self.CHUCVU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CONGVIEC" EntityType="Self.CONGVIEC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DANGCONGVIEC" EntityType="Self.DANGCONGVIEC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DANGPHANCONG" EntityType="Self.DANGPHANCONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NGUOIDUNG" EntityType="Self.NGUOIDUNG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHANCONG" EntityType="Self.PHANCONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHONGBAN" EntityType="Self.PHONGBAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRANGTHAI" EntityType="Self.TRANGTHAI" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_BAOCAO_CONGVIEC" Association="Self.fk_BAOCAO_CONGVIEC">
+            <End Role="CONGVIEC" EntitySet="CONGVIEC" />
+            <End Role="BAOCAOCONGVIEC" EntitySet="BAOCAOCONGVIEC" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BAOCAO_NGUOIDUNG" Association="Self.fk_BAOCAO_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="BAOCAOCONGVIEC" EntitySet="BAOCAOCONGVIEC" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BINHLUAN_CONGVIEC" Association="Self.fk_BINHLUAN_CONGVIEC">
+            <End Role="CONGVIEC" EntitySet="CONGVIEC" />
+            <End Role="BINHLUAN" EntitySet="BINHLUAN" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BINHLUAN_NGUOIDUNG" Association="Self.fk_BINHLUAN_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="BINHLUAN" EntitySet="BINHLUAN" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CONGVIEC_DANGCONGVIEC" Association="Self.fk_CONGVIEC_DANGCONGVIEC">
+            <End Role="DANGCONGVIEC" EntitySet="DANGCONGVIEC" />
+            <End Role="CONGVIEC" EntitySet="CONGVIEC" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CONGVIEC_NGUOIDUNG" Association="Self.fk_CONGVIEC_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="CONGVIEC" EntitySet="CONGVIEC" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_CHUCDANH" Association="Self.fk_NGUOIDUNG_CHUCDANH">
+            <End Role="CHUCDANH" EntitySet="CHUCDANH" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_CHUCVU" Association="Self.fk_NGUOIDUNG_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_PHONGBAN" Association="Self.fk_NGUOIDUNG_PHONGBAN">
+            <End Role="PHONGBAN" EntitySet="PHONGBAN" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANCONG_CONGVIEC" Association="Self.fk_PHANCONG_CONGVIEC">
+            <End Role="CONGVIEC" EntitySet="CONGVIEC" />
+            <End Role="PHANCONG" EntitySet="PHANCONG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANCONG_NGUOIDUNG" Association="Self.fk_PHANCONG_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="PHANCONG" EntitySet="PHANCONG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANCONG_TRANGTHAI" Association="Self.fk_PHANCONG_TRANGTHAI">
+            <End Role="TRANGTHAI" EntitySet="TRANGTHAI" />
+            <End Role="PHANCONG" EntitySet="PHANCONG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANDONG_DANGPHANCONG" Association="Self.fk_PHANDONG_DANGPHANCONG">
+            <End Role="DANGPHANCONG" EntitySet="DANGPHANCONG" />
+            <End Role="PHANCONG" EntitySet="PHANCONG" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLCVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BAOCAOCONGVIEC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDNGUOITAO" Type="Int32" />
+          <Property Name="IDCONGVIEC" Type="Int32" />
+          <Property Name="IDPHANCONG" Type="Int32" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CONGVIEC" Relationship="Self.fk_BAOCAO_CONGVIEC" FromRole="BAOCAOCONGVIEC" ToRole="CONGVIEC" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.fk_BAOCAO_NGUOIDUNG" FromRole="BAOCAOCONGVIEC" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="BINHLUAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDNGUOITAO" Type="Int32" />
+          <Property Name="IDCONGVIEC" Type="Int32" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
+          <Property Name="NGAYCAPNHAT" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CONGVIEC" Relationship="Self.fk_BINHLUAN_CONGVIEC" FromRole="BINHLUAN" ToRole="CONGVIEC" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.fk_BINHLUAN_NGUOIDUNG" FromRole="BINHLUAN" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="CHUCDANH">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TENCHUCDANH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TENVIETTAT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.fk_NGUOIDUNG_CHUCDANH" FromRole="CHUCDANH" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TENCHUCVU" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.fk_NGUOIDUNG_CHUCVU" FromRole="CHUCVU" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="CONGVIEC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDNGUOITAO" Type="Int32" />
+          <Property Name="TIEUDE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GHICHU" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
+          <Property Name="HOANTHANH" Type="Boolean" />
+          <Property Name="IDDANGCONGVIEC" Type="Int32" />
+          <Property Name="NGAYCAPNHAT" Type="DateTime" Precision="3" />
+          <Property Name="XOA" Type="Boolean" />
+          <Property Name="PARENTID" Type="Int32" />
+          <Property Name="TAPTIN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="THUMUC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BAOCAOCONGVIECs" Relationship="Self.fk_BAOCAO_CONGVIEC" FromRole="CONGVIEC" ToRole="BAOCAOCONGVIEC" />
+          <NavigationProperty Name="BINHLUANs" Relationship="Self.fk_BINHLUAN_CONGVIEC" FromRole="CONGVIEC" ToRole="BINHLUAN" />
+          <NavigationProperty Name="DANGCONGVIEC" Relationship="Self.fk_CONGVIEC_DANGCONGVIEC" FromRole="CONGVIEC" ToRole="DANGCONGVIEC" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.fk_CONGVIEC_NGUOIDUNG" FromRole="CONGVIEC" ToRole="NGUOIDUNG" />
+          <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANCONG_CONGVIEC" FromRole="CONGVIEC" ToRole="PHANCONG" />
+        </EntityType>
+        <EntityType Name="DANGCONGVIEC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CONGVIECs" Relationship="Self.fk_CONGVIEC_DANGCONGVIEC" FromRole="DANGCONGVIEC" ToRole="CONGVIEC" />
+        </EntityType>
+        <EntityType Name="DANGPHANCONG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANDONG_DANGPHANCONG" FromRole="DANGPHANCONG" ToRole="PHANCONG" />
+        </EntityType>
+        <EntityType Name="NGUOIDUNG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TENDANGNHAP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MATKHAU" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TENNGUOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TRANGTHAI" Type="Boolean" />
+          <Property Name="NGAYTAO" Type="DateTime" Precision="3" />
+          <Property Name="IDPHONGBAN" Type="Int32" />
+          <Property Name="IDCHUCDANH" Type="Int32" />
+          <Property Name="IDCHUCVU" Type="Int32" />
+          <NavigationProperty Name="BAOCAOCONGVIECs" Relationship="Self.fk_BAOCAO_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="BAOCAOCONGVIEC" />
+          <NavigationProperty Name="BINHLUANs" Relationship="Self.fk_BINHLUAN_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="BINHLUAN" />
+          <NavigationProperty Name="CHUCDANH" Relationship="Self.fk_NGUOIDUNG_CHUCDANH" FromRole="NGUOIDUNG" ToRole="CHUCDANH" />
+          <NavigationProperty Name="CHUCVU" Relationship="Self.fk_NGUOIDUNG_CHUCVU" FromRole="NGUOIDUNG" ToRole="CHUCVU" />
+          <NavigationProperty Name="CONGVIECs" Relationship="Self.fk_CONGVIEC_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="CONGVIEC" />
+          <NavigationProperty Name="PHONGBAN" Relationship="Self.fk_NGUOIDUNG_PHONGBAN" FromRole="NGUOIDUNG" ToRole="PHONGBAN" />
+          <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANCONG_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="PHANCONG" />
+        </EntityType>
+        <EntityType Name="PHANCONG">
+          <Key>
+            <PropertyRef Name="IDPHANCONG" />
+            <PropertyRef Name="IDNGUOINHAN" />
+            <PropertyRef Name="IDCONGVIEC" />
+          </Key>
+          <Property Name="IDPHANCONG" Type="Int32" Nullable="false" />
+          <Property Name="IDNGUOINHAN" Type="Int32" Nullable="false" />
+          <Property Name="IDCONGVIEC" Type="Int32" Nullable="false" />
+          <Property Name="TENPHANCONG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IDTRANGTHAI" Type="Int32" />
+          <Property Name="IDDANGPHANCONG" Type="Int32" />
+          <Property Name="NOIDUNG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GHICHU" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NGAYCAPNHAT" Type="DateTime" Precision="3" />
+          <Property Name="NGAYBATDAU" Type="DateTime" Precision="3" />
+          <Property Name="NGAYKETTHUC" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CONGVIEC" Relationship="Self.fk_PHANCONG_CONGVIEC" FromRole="PHANCONG" ToRole="CONGVIEC" />
+          <NavigationProperty Name="DANGPHANCONG" Relationship="Self.fk_PHANDONG_DANGPHANCONG" FromRole="PHANCONG" ToRole="DANGPHANCONG" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.fk_PHANCONG_NGUOIDUNG" FromRole="PHANCONG" ToRole="NGUOIDUNG" />
+          <NavigationProperty Name="TRANGTHAI" Relationship="Self.fk_PHANCONG_TRANGTHAI" FromRole="PHANCONG" ToRole="TRANGTHAI" />
+        </EntityType>
+        <EntityType Name="PHONGBAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TENPHONG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.fk_NGUOIDUNG_PHONGBAN" FromRole="PHONGBAN" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="TRANGTHAI">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANCONG_TRANGTHAI" FromRole="TRANGTHAI" ToRole="PHANCONG" />
+        </EntityType>
+        <Association Name="fk_BAOCAO_CONGVIEC">
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="0..1" />
+          <End Role="BAOCAOCONGVIEC" Type="Self.BAOCAOCONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BAOCAOCONGVIEC">
+              <PropertyRef Name="IDCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BAOCAO_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="BAOCAOCONGVIEC" Type="Self.BAOCAOCONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BAOCAOCONGVIEC">
+              <PropertyRef Name="IDNGUOITAO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BINHLUAN_CONGVIEC">
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="0..1" />
+          <End Role="BINHLUAN" Type="Self.BINHLUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BINHLUAN">
+              <PropertyRef Name="IDCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BINHLUAN_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="BINHLUAN" Type="Self.BINHLUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BINHLUAN">
+              <PropertyRef Name="IDNGUOITAO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_CHUCDANH">
+          <End Role="CHUCDANH" Type="Self.CHUCDANH" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCDANH">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDCHUCDANH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_CHUCVU">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDCHUCVU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CONGVIEC_DANGCONGVIEC">
+          <End Role="DANGCONGVIEC" Type="Self.DANGCONGVIEC" Multiplicity="0..1" />
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DANGCONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONGVIEC">
+              <PropertyRef Name="IDDANGCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CONGVIEC_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONGVIEC">
+              <PropertyRef Name="IDNGUOITAO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANCONG_CONGVIEC">
+          <End Role="CONGVIEC" Type="Self.CONGVIEC" Multiplicity="1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONGVIEC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDCONGVIEC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANDONG_DANGPHANCONG">
+          <End Role="DANGPHANCONG" Type="Self.DANGPHANCONG" Multiplicity="0..1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DANGPHANCONG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDDANGPHANCONG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_PHONGBAN">
+          <End Role="PHONGBAN" Type="Self.PHONGBAN" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONGBAN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDPHONGBAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANCONG_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDNGUOINHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_PHANCONG_TRANGTHAI">
+          <End Role="TRANGTHAI" Type="Self.TRANGTHAI" Multiplicity="0..1" />
+          <End Role="PHANCONG" Type="Self.PHANCONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRANGTHAI">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PHANCONG">
+              <PropertyRef Name="IDTRANGTHAI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLCVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BAOCAOCONGVIECs" EntityType="Self.BAOCAOCONGVIEC" />
+          <EntitySet Name="BINHLUANs" EntityType="Self.BINHLUAN" />
+          <EntitySet Name="CHUCDANHs" EntityType="Self.CHUCDANH" />
+          <EntitySet Name="CHUCVUs" EntityType="Self.CHUCVU" />
+          <EntitySet Name="CONGVIECs" EntityType="Self.CONGVIEC" />
+          <EntitySet Name="DANGCONGVIECs" EntityType="Self.DANGCONGVIEC" />
+          <EntitySet Name="DANGPHANCONGs" EntityType="Self.DANGPHANCONG" />
+          <EntitySet Name="NGUOIDUNGs" EntityType="Self.NGUOIDUNG" />
+          <EntitySet Name="PHANCONGs" EntityType="Self.PHANCONG" />
+          <EntitySet Name="PHONGBANs" EntityType="Self.PHONGBAN" />
+          <EntitySet Name="TRANGTHAIs" EntityType="Self.TRANGTHAI" />
+          <AssociationSet Name="fk_BAOCAO_CONGVIEC" Association="Self.fk_BAOCAO_CONGVIEC">
+            <End Role="CONGVIEC" EntitySet="CONGVIECs" />
+            <End Role="BAOCAOCONGVIEC" EntitySet="BAOCAOCONGVIECs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BAOCAO_NGUOIDUNG" Association="Self.fk_BAOCAO_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="BAOCAOCONGVIEC" EntitySet="BAOCAOCONGVIECs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BINHLUAN_CONGVIEC" Association="Self.fk_BINHLUAN_CONGVIEC">
+            <End Role="CONGVIEC" EntitySet="CONGVIECs" />
+            <End Role="BINHLUAN" EntitySet="BINHLUANs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BINHLUAN_NGUOIDUNG" Association="Self.fk_BINHLUAN_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="BINHLUAN" EntitySet="BINHLUANs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_CHUCDANH" Association="Self.fk_NGUOIDUNG_CHUCDANH">
+            <End Role="CHUCDANH" EntitySet="CHUCDANHs" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_CHUCVU" Association="Self.fk_NGUOIDUNG_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVUs" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CONGVIEC_DANGCONGVIEC" Association="Self.fk_CONGVIEC_DANGCONGVIEC">
+            <End Role="DANGCONGVIEC" EntitySet="DANGCONGVIECs" />
+            <End Role="CONGVIEC" EntitySet="CONGVIECs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CONGVIEC_NGUOIDUNG" Association="Self.fk_CONGVIEC_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="CONGVIEC" EntitySet="CONGVIECs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANCONG_CONGVIEC" Association="Self.fk_PHANCONG_CONGVIEC">
+            <End Role="CONGVIEC" EntitySet="CONGVIECs" />
+            <End Role="PHANCONG" EntitySet="PHANCONGs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANDONG_DANGPHANCONG" Association="Self.fk_PHANDONG_DANGPHANCONG">
+            <End Role="DANGPHANCONG" EntitySet="DANGPHANCONGs" />
+            <End Role="PHANCONG" EntitySet="PHANCONGs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_PHONGBAN" Association="Self.fk_NGUOIDUNG_PHONGBAN">
+            <End Role="PHONGBAN" EntitySet="PHONGBANs" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANCONG_NGUOIDUNG" Association="Self.fk_PHANCONG_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="PHANCONG" EntitySet="PHANCONGs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_PHANCONG_TRANGTHAI" Association="Self.fk_PHANCONG_TRANGTHAI">
+            <End Role="TRANGTHAI" EntitySet="TRANGTHAIs" />
+            <End Role="PHANCONG" EntitySet="PHANCONGs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLCVModelStoreContainer" CdmEntityContainer="QLCVEntities">
+          <EntitySetMapping Name="BAOCAOCONGVIECs">
+            <EntityTypeMapping TypeName="QLCVModel.BAOCAOCONGVIEC">
+              <MappingFragment StoreEntitySet="BAOCAOCONGVIEC">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDNGUOITAO" ColumnName="IDNGUOITAO" />
+                <ScalarProperty Name="IDCONGVIEC" ColumnName="IDCONGVIEC" />
+                <ScalarProperty Name="IDPHANCONG" ColumnName="IDPHANCONG" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+                <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BINHLUANs">
+            <EntityTypeMapping TypeName="QLCVModel.BINHLUAN">
+              <MappingFragment StoreEntitySet="BINHLUAN">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDNGUOITAO" ColumnName="IDNGUOITAO" />
+                <ScalarProperty Name="IDCONGVIEC" ColumnName="IDCONGVIEC" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+                <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+                <ScalarProperty Name="NGAYCAPNHAT" ColumnName="NGAYCAPNHAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CHUCDANHs">
+            <EntityTypeMapping TypeName="QLCVModel.CHUCDANH">
+              <MappingFragment StoreEntitySet="CHUCDANH">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TENCHUCDANH" ColumnName="TENCHUCDANH" />
+                <ScalarProperty Name="TENVIETTAT" ColumnName="TENVIETTAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CHUCVUs">
+            <EntityTypeMapping TypeName="QLCVModel.CHUCVU">
+              <MappingFragment StoreEntitySet="CHUCVU">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TENCHUCVU" ColumnName="TENCHUCVU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CONGVIECs">
+            <EntityTypeMapping TypeName="QLCVModel.CONGVIEC">
+              <MappingFragment StoreEntitySet="CONGVIEC">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDNGUOITAO" ColumnName="IDNGUOITAO" />
+                <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+                <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
+                <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+                <ScalarProperty Name="HOANTHANH" ColumnName="HOANTHANH" />
+                <ScalarProperty Name="IDDANGCONGVIEC" ColumnName="IDDANGCONGVIEC" />
+                <ScalarProperty Name="NGAYCAPNHAT" ColumnName="NGAYCAPNHAT" />
+                <ScalarProperty Name="XOA" ColumnName="XOA" />
+                <ScalarProperty Name="PARENTID" ColumnName="PARENTID" />
+                <ScalarProperty Name="TAPTIN" ColumnName="TAPTIN" />
+                <ScalarProperty Name="THUMUC" ColumnName="THUMUC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DANGCONGVIECs">
+            <EntityTypeMapping TypeName="QLCVModel.DANGCONGVIEC">
+              <MappingFragment StoreEntitySet="DANGCONGVIEC">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TEN" ColumnName="TEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DANGPHANCONGs">
+            <EntityTypeMapping TypeName="QLCVModel.DANGPHANCONG">
+              <MappingFragment StoreEntitySet="DANGPHANCONG">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TEN" ColumnName="TEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NGUOIDUNGs">
+            <EntityTypeMapping TypeName="QLCVModel.NGUOIDUNG">
+              <MappingFragment StoreEntitySet="NGUOIDUNG">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TENDANGNHAP" ColumnName="TENDANGNHAP" />
+                <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
+                <ScalarProperty Name="TENNGUOIDUNG" ColumnName="TENNGUOIDUNG" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+                <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+                <ScalarProperty Name="IDPHONGBAN" ColumnName="IDPHONGBAN" />
+                <ScalarProperty Name="IDCHUCDANH" ColumnName="IDCHUCDANH" />
+                <ScalarProperty Name="IDCHUCVU" ColumnName="IDCHUCVU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHANCONGs">
+            <EntityTypeMapping TypeName="QLCVModel.PHANCONG">
+              <MappingFragment StoreEntitySet="PHANCONG">
+                <ScalarProperty Name="IDPHANCONG" ColumnName="IDPHANCONG" />
+                <ScalarProperty Name="IDNGUOINHAN" ColumnName="IDNGUOINHAN" />
+                <ScalarProperty Name="IDCONGVIEC" ColumnName="IDCONGVIEC" />
+                <ScalarProperty Name="TENPHANCONG" ColumnName="TENPHANCONG" />
+                <ScalarProperty Name="IDTRANGTHAI" ColumnName="IDTRANGTHAI" />
+                <ScalarProperty Name="IDDANGPHANCONG" ColumnName="IDDANGPHANCONG" />
+                <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+                <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
+                <ScalarProperty Name="NGAYCAPNHAT" ColumnName="NGAYCAPNHAT" />
+                <ScalarProperty Name="NGAYBATDAU" ColumnName="NGAYBATDAU" />
+                <ScalarProperty Name="NGAYKETTHUC" ColumnName="NGAYKETTHUC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHONGBANs">
+            <EntityTypeMapping TypeName="QLCVModel.PHONGBAN">
+              <MappingFragment StoreEntitySet="PHONGBAN">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TENPHONG" ColumnName="TENPHONG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRANGTHAIs">
+            <EntityTypeMapping TypeName="QLCVModel.TRANGTHAI">
+              <MappingFragment StoreEntitySet="TRANGTHAI">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TEN" ColumnName="TEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

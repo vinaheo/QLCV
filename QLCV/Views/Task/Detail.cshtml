@@ -1,0 +1,349 @@
+﻿@model QLCV.Models.Task.TaskDetailViewModel
+@using QLCV.DAO
+
+@{
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+@{
+    NGUOIDUNG userLogin = Session["USER"] as NGUOIDUNG;
+    DAO_Task dao_task = new DAO_Task();
+}
+<div id="page-wrapper">
+    <script>
+        var listNguoiDungsByViewBag = @Html.Raw(Json.Encode(((IEnumerable<NGUOIDUNG>)ViewBag.NDs).Select(user => new
+            {
+                userId = user.ID,
+                userTen = user.TENNGUOIDUNG
+            })
+        ));
+        //alert(array[0].userTen);
+    </script>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                [@Model.id] @Model.tieude <span style="font-size: 20px" class="@(userLogin.ID != Model.idNguoiTao && Model.hoanthanh == true ? "":"hidden")">(Đã đóng công việc)</span>
+                <a href="#" onclick="CloseTask(@Model.id)" class="btn btn-danger @(userLogin.ID == Model.idNguoiTao && Model.hoanthanh == false ? "" : "hidden")" role="button" id="btnCloseTask">Đóng công việc</a>
+                <a href="#" onclick="OpenTask(@Model.id)" class="btn btn-danger @(userLogin.ID == Model.idNguoiTao && Model.hoanthanh == true ? "" : "hidden")" role="button" id="btnOpenTask">Mở công việc</a>
+                <a href="#" id="displayEdit" onclick="displayEdit()" style="float:right; font-size: 20px; margin-right: 20px" class="@(userLogin.ID == Model.idNguoiTao ? "" : "hidden")">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+
+                @{
+                    if (Model.ngaycapnhat != default(DateTime))
+                    {
+                        <br />
+                        <span style="font-size: 10px">Cập nhật vào ngày @Model.ngaycapnhat.ToString("dd/MM/yyyy")</span>
+                    }
+                    else
+                    {
+                        <br />
+                        <span style="font-size: 10px">Tạo vào ngày @Model.ngaytao.ToString("dd/MM/yyyy")</span>
+                    }
+                }
+
+            </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    @using (Html.BeginForm("Edit", "Task", FormMethod.Post, new { @role = "form", @class = "form-horizontal", enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default" style="border: none">
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Tiêu đề : </label>
+                            <span id="detailTieuDe">@Model.tieude</span>
+                            @Html.TextBoxFor(m => m.id, new { @class = "hidden" })
+                            @Html.TextBoxFor(m => m.tieude, new { @class = "form-control hidden", @id = "tieude" })
+                        </div>
+                        <div class="form-group">
+                            <label>Nội dung chung : </label>
+                            <span id="detailNoiDung">@Model.noidung</span>
+                            @Html.TextAreaFor(m => m.noidung, new { @class = "form-control hidden", @id = "noidung" })
+                        </div>
+                        <div class="form-group">
+                            <label>Chi tiết</label>
+                            <input name="numPC" id="numItem" value="@Model.numPC" class="hidden" />
+                            <div class="panel panel-default">
+                                <div class="panel-heading hidden" id="panelThemChiTiet">
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modalAddPhanCong">
+                                        <span class="glyphicon glyphicon-plus"></span> Thêm chi tiết
+                                    </button>
+                                    <div id="modalAddPhanCong" class="modal fade" role="dialog" style="">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content" style="position:relative">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Chi tiết phân công</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label>Tên phân công</label>
+                                                        <input class="form-control" id="txtTenPhanCong">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Nội dung phân công</label>
+                                                        <textarea class="form-control" rows="3" id="txtNoiDungPhanCong"></textarea>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Ngày bắt đầu</label>
+                                                        <div><input type='text' class="form-control dpNgayBatDau" id='dpNgayBatDau' /></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Ngày kết thúc</label>
+                                                        <div><input type='text' class="form-control dpNgayKetThuc" id='dpNgayKetThuc' /></div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Phân công cho</label>
+                                                        <div>
+                                                            <select id="taNguoiNhan" multiple="multiple" class="form-control slNguoiNhans " style="width: 100%">
+                                                                <!--The following blank option must be added to allow select2 to set the placeholder text-->
+                                                                @{
+        DAO_User dao_user = new DAO_User();
+        List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+        foreach (NGUOIDUNG nd in nds)
+        {
+            <option value="@nd.ID">@nd.TENNGUOIDUNG</option>
+        }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" id="btnAdd">Add</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <ul id="listchitiet">
+                                        @{
+        for (int i = 0; i < Model.pcs.Count; i++)
+        {
+            <li id="pc@(i)" class='liPhanCong'>
+                <a data-toggle="modal" data-target="#modalPhanCong@(i)" class='linkOpenModal' id="linkTenPhanCong@(i)">@Model.pcs[i].TENPHANCONG </a>
+                <span id="lbTrangThaiPhanCong@(i)">(@dao_task.GetTrangThai(@Model.pcs[i].IDTRANGTHAI.GetValueOrDefault()).TEN)</span>
+                <input name='pcs[@(i)].TENPHANCONG' value='@Model.pcs[i].TENPHANCONG' class='tenphancong hidden' id='txtTenPhanCong@(i)' />
+                <input name='pcs[@(i)].NOIDUNG' value='@Model.pcs[i].NOIDUNG' class='noidungphancong hidden' id='txtNoiDungPhanCong@(i)' />
+                <input name='pcs[@(i)].NGAYBATDAU' value='@Model.pcs[i].NGAYBATDAU' class='ngaybatdau hidden' id='txtNgayBatDau@(i)' />
+                <input name='pcs[@(i)].NGAYKETTHUC' value='@Model.pcs[i].NGAYKETTHUC' class='ngayketthuc hidden' id='txtNgayKetThuc@(i)' />
+                <input name='pcs[@(i)].IDTRANGTHAI' value='@Model.pcs[i].IDTRANGTHAI' class='trangthai hidden' id='txtTrangThai@(i)' />
+                <input name='listIDNguoiNhans[@(i)]' value='@Model.listId[i]' class='nguoinhan hidden' id='txtNguoiNhans@(i)' />
+                <span style="margin-left: 50px" class="glyphicon glyphicon-trash btnRemovePC hidden" onclick="removepc(@i)"></span>
+                <div id='modalPhanCong@(i)' class='modal fade modalPhanCong' role='dialog'>
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                                <h4 class='modal-title'>Chi tiết phân công </h4>
+                            </div>
+                            <div class='modal-body'>
+                                <div class='form-group'>
+                                    <label>Tên phân công</label>
+                                    <input class='form-control hidden txtEditTenPhanCong' id='txtEditTenPhanCong@(i)' value='@Model.pcs[i].TENPHANCONG'>
+                                    <span id="spanTenPhanCong@(i)" class='spanTenPhanCong'>@Model.pcs[i].TENPHANCONG</span>
+                                </div>
+                                <div class='form-group'>
+                                    <label>Nội dung phân công</label>
+                                    <textarea class='form-control hidden txtEditNoiDungPhanCong' rows='3' id='txtEditNoiDungPhanCong@(i)'>@Model.pcs[i].NOIDUNG</textarea>
+                                    <span id="spanNoiDungPhanCong@(i)" class='spanNoiDungPhanCong'>@Model.pcs[i].NOIDUNG</span>
+                                </div>
+                                <div class='form-group'>
+                                    <label>Trạng thái</label>
+                                    <span id="spanTrangThaiPhanCong@(i)" class='spanTrangThaiPhanCong'>@dao_task.GetTrangThai(@Model.pcs[i].IDTRANGTHAI.GetValueOrDefault()).TEN</span>
+                                </div>
+                                <div class='form-group'>
+                                    <label>Ngày bắt đầu</label>
+                                    <input type='text' class='form-control dpNgayBatDau hidden dpEditNgayBatDau' id='dpEditNgayBatDau@(i)' value='@Model.pcs[i].NGAYBATDAU.GetValueOrDefault().ToString("dd/MM/yyyy")' />
+                                    <span id="spanNgayBatDau@(i)" class='spanNgayBatDau'>@Model.pcs[i].NGAYBATDAU.GetValueOrDefault().ToString("dd/MM/yyyy")</span>
+                                </div>
+                                <div class='form-group'>
+                                    <label>Ngày kết thúc</label>
+                                    <input type='text' class='form-control dpNgayKetThuc hidden dpEditNgayKetThuc' id='dpEditNgayKetThuc@(i)' value='@Model.pcs[i].NGAYKETTHUC.GetValueOrDefault().ToString("dd/MM/yyyy")' />
+                                    <span id="spanNgayKetThuc@(i)" class='spanNgayKetThuc'>@Model.pcs[i].NGAYKETTHUC.GetValueOrDefault().ToString("dd/MM/yyyy")</span>
+                                </div>
+                                <div class='form-group'>
+                                    <label>Phân công cho</label>
+                                    <div class="hidden divEditNguoiNhan" id="divEditNguoiNhan@(i)">
+                                        <select id='taEditNguoiNhan@(i)' multiple='multiple' class='form-control slNguoiNhans taEditNguoiNhan' style='width: 100%'>
+                                            @{
+            //DAO_User dao_user = new DAO_User();
+            string[] list = Model.listId[i].Split(',');
+            //List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+            foreach (NGUOIDUNG nd in nds)
+            {
+                <option value="@nd.ID" @(list.Contains(nd.ID.ToString()) == true ? "selected" : "")>@nd.TENNGUOIDUNG</option>
+            }
+                                            }
+                                        </select>
+                                    </div>
+                                    <span id="spanNguoiNhan@(i)"></span>
+                                </div>
+                                @{
+            List<string> idBaoCao = Model.listId[i].Split(',').ToList();
+                                }
+                                <div class='form-group divBaoCao @(idBaoCao.Contains(userLogin.ID.ToString()) ? "":"hidden")' id="divBaoCao@(i)">
+                                    <label>Báo cáo công việc</label>
+                                    <ul id="ulBaoCao@(i)">
+                                        @{
+            //DAO_Task dao_task = new DAO_Task();
+            List<BAOCAOCONGVIEC> bcs = dao_task.GetBAOCAO(Model.id, i);
+            foreach (BAOCAOCONGVIEC bc in bcs)
+            {
+                <li>
+                    <label>@bc.NGUOIDUNG.TENNGUOIDUNG:</label>
+                    <span>@bc.NOIDUNG</span>
+                </li>
+            }
+                                        }
+                                    </ul>
+                                    @{
+            if (Model.pcs[i].IDTRANGTHAI != 4)
+            {
+                <input class='form-control' id='txtBinhLuanPhanCong@(i)' value='' placeholder="Viết báo cáo...">
+                                        <script>
+                                            $('#txtBinhLuanPhanCong@(i)').keypress(function (e) {
+                                                if (e.which == 13) {
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: "../InsertBAOCAO",
+                                                        data: JSON.stringify({idnt : @userLogin.ID, idcv : @Model.id, idpc : @i, noidung: $('#txtBinhLuanPhanCong@(i)').val()}),
+                                                        contentType: "application/json; charset=utf-8",
+                                                        dataType: "json",
+                                                        success: function (data) {
+                                                            var text = $('#txtBinhLuanPhanCong@(i)').val();
+                                                            var rows = "<li>"
+                                                                    + "<label>@userLogin.TENNGUOIDUNG: </label>"
+                                                                    + "<span>"+text+"</span>"
+                                                                    + "</li>";
+                                                            $('#ulBaoCao@(i)').append(rows);
+                                                            $('#txtBinhLuanPhanCong@(i)').val("");
+                                                        },
+                                                        failure: function (response) {
+                                                            alert('khong thanh cong');
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        </script>
+            }
+                                    }
+
+                                </div>
+                            </div>
+                            <div class='modal-footer'>
+                                @{
+            if (Model.pcs[i].NGAYCAPNHAT != default(DateTime))
+            {
+                <span style="font-size: 10px">Cập nhật trạng thái vào ngày @Model.pcs[i].NGAYCAPNHAT.GetValueOrDefault()</span>
+            }
+                                }
+                                @if (Model.pcs[i].IDTRANGTHAI != 4)
+                                {
+                                    <button type='button' class='btn btn-default btnEditPC hidden' id='btnEditPC@(i)' onclick='openEditPC(@i)'>Edit</button>
+                                    <button type='button' class='btn btn-default hidden' id='btnSavePC@(i)' onclick='saveEditPC(@i)'>Save</button>
+                                }
+                                @{
+            if (idBaoCao.Contains(userLogin.ID.ToString()))
+            {
+                switch (Model.pcs[i].IDTRANGTHAI)
+                {
+                    case 1:
+                        <a href="#" class="btn btn-info" role="button" id="btnTiepNhan@(i)">Tiếp nhận</a>
+                        break;
+                    case 2:
+                    <a href="#" class="btn btn-info" role="button" id="btnTiepNhan@(i)">Đã xử lý</a>
+                        break;
+                    case 5:
+                    <a href="#" class="btn btn-info" role="button" id="btnTiepNhan@(i)">Đã xử lý</a>
+                        break;
+                }
+            }
+            if (Model.idNguoiTao == userLogin.ID)
+            {
+                switch (Model.pcs[i].IDTRANGTHAI)
+                {
+                    case 3:
+                        <a href="#" class="btn btn-info" role="button" id="btnTiepNhan@(i)">Đã kiểm duyệt</a>
+                        break;
+                    case 4:
+                    <a href="#" class="btn btn-info" role="button" id="btnTiepNhan@(i)">Xử lý lại</a>
+                        break;
+                }
+
+            }
+                                }
+                                <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                                <script>
+                                    $('#btnTiepNhan@(i)').click(function () {
+                                        var r = confirm("Bạn có chắc chắn muốn thực hiện thao tác này không?");
+                                        if (r == true) {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "../TiepNhanPhanCong",
+                                                data: JSON.stringify({idCongViec : @Model.id, idPhanCong : @i}),
+                                                contentType: "application/json; charset=utf-8",
+                                                dataType: "json",
+                                                success: function (data) {
+                                                    document.location.reload();
+                                                },
+                                                failure: function (response) {
+                                                    alert('khong thanh cong');
+                                                }
+                                            });
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $('#txtEditTenPhanCong0').val($('#txtTenPhanCong0').val());
+                    $('#txtEditNoiDungPhanCong0').val($('#txtNoiDungPhanCong0').val());
+                    $('#dpEditNgayBatDau0').val($('#txtNgayBatDau0').val());
+                    $('#dpEditNgayKetThuc0').val($('#txtNgayKetThuc0').val());
+                </script>
+            </li>
+        }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tập tin đính kèm</label>
+                            @Html.TextBoxFor(m => m.taptinUpload, "", new { type = "file", @class = "hidden", id = "uploadPlace" })
+                            @*<a href="">@Model.taptin</a>*@
+                            <a href="~/Task/Download?file=@Model.thumuc">@Model.taptin</a>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row rowButton hidden" style="text-align: right">
+            <div class="col-lg-12">
+                <div style="border-top: 1px solid #eee; padding-top: 9px">
+                    <button type="submit" class="btn btn-success" id="btnEditTask">Save</button>
+                    <button class="btn btn-danger btnCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
