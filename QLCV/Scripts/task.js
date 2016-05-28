@@ -284,7 +284,6 @@ $('.btnCancel').click(function (e) {
     $('#uploadPlace').addClass('hidden');
 });
 function closeEdit() {
-
     $('#tieude').addClass('hidden');
     $('#noidung').addClass('hidden');
     $('#panelThemChiTiet').addClass('hidden');
@@ -353,4 +352,21 @@ function OpenTask(idCongViec) {
             }
         });
     }
+}
+
+function FilterTask() {
+    var ids = $('#slId').val();
+    $.ajax({
+        type: "POST",
+        url: "../Report/GetTask",
+        data: JSON.stringify({ id: 1 }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            alert('thanh cong');
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
 }

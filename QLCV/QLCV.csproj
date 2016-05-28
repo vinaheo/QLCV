@@ -139,6 +139,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="DANGCONGVIEC.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -167,6 +168,7 @@
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Account\LoginViewModel.cs" />
+    <Compile Include="Models\Report\ReportTaskViewModel.cs" />
     <Compile Include="Models\Task\TaskDetailViewModel.cs" />
     <Compile Include="Models\Task\TaskIndexViewModel.cs" />
     <Compile Include="Models\Task\TaskInsertViewModel.cs" />
@@ -1080,6 +1082,7 @@
     <Content Include="Views\Task\Insert.cshtml" />
     <Content Include="Views\Task\Detail.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
