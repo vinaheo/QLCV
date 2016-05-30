@@ -57,7 +57,7 @@ function removepc(i) {
     }
     var listNguoiNhans = document.getElementsByClassName('nguoinhan');
     for (var i = 0; i < listNguoiNhans.length; i++) {
-        listNguoiNhans[i].setAttribute("name", "listIDNguoiNhans["+i+"]");
+        listNguoiNhans[i].setAttribute("name", "listIDNguoiNhans[" + i + "]");
         listNguoiNhans[i].setAttribute("id", "txtNguoiNhans" + i);
     }
     var listLiPhanCong = document.getElementsByClassName('liPhanCong');
@@ -92,11 +92,11 @@ function saveEditPC(i) {
     $('#spanNgayKetThuc' + i).text($('#dpEditNgayKetThuc' + i).val());
     //$('#spanNguoiNhan' + i).text($('#txtEditTenPhanCong' + i).val());
     var listNguoiNhansText = [];
-    var listNguoiNhans = $("#taEditNguoiNhan"+i).select2('data');
+    var listNguoiNhans = $("#taEditNguoiNhan" + i).select2('data');
     for (var j = 0; j < listNguoiNhans.length; j++) {
         listNguoiNhansText.push(listNguoiNhans[j].text);
     }
-    $('#spanNguoiNhan'+i).text(listNguoiNhansText.join(', '));
+    $('#spanNguoiNhan' + i).text(listNguoiNhansText.join(', '));
     closeEditPC(i);
     $('#modalPhanCong' + i).modal('toggle');
 }
@@ -211,7 +211,7 @@ $("#btnAdd").click(function () {
                                         + "</div>"
                                         + "<div class='form-group'>"
                                             + "<label>Phân công cho</label><br/>"
-                                            + "<div class='divEditNguoiNhan hidden' id='divEditNguoiNhan"+i+"'>"
+                                            + "<div class='divEditNguoiNhan hidden' id='divEditNguoiNhan" + i + "'>"
                                                 + "<select id='taEditNguoiNhan" + i + "' multiple='multiple' class='form-control slNguoiNhans' style='width: 100%'>"
                                                     //+ "<option value='1' " + checkElementExist(listIdNguoiNhans, "1") + ">Quan1</option>"
                                                     //+ "<option value='2' " + checkElementExist(listIdNguoiNhans, "2") + ">Quan2</option>"
@@ -314,7 +314,7 @@ function CloseTask(idCongViec) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                if(data === true){
+                if (data === true) {
                     alert("Đã đóng công việc");
                     $('#btnCloseTask').addClass('hidden');
                     $('#btnOpenTask').removeClass('hidden');
@@ -354,16 +354,34 @@ function OpenTask(idCongViec) {
     }
 }
 
+function ToJavaScriptDate(value) {
+    var pattern = /Date\(([^)]+)\)/;
+    var results = pattern.exec(value);
+    var dt = new Date(parseFloat(results[1]));
+    return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+}
+
 function FilterTask() {
     var ids = $('#slId').val();
     $.ajax({
         type: "POST",
         url: "../Report/GetTask",
-        data: JSON.stringify({ id: 1 }),
+        data: JSON.stringify({ ids: ids }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
-            alert('thanh cong');
+            var data = response.list;
+            $('tbody').empty();
+            for (var i in data) {
+                
+                var stringAppend = "<tr>"
+                                    + "<td>" + data[i].ID +"</td>"
+                                    + "<td>" + data[i].TIEUDE + "</td>"
+                                    + "<td>" + ToJavaScriptDate(data[i].NGAYTAO) + "</td>"
+                                    + "<td>" + data[i].HOANTHANH + "</td>"
+                                    + "<tr>";
+                $('tbody').append(stringAppend);
+            }
         },
         failure: function (response) {
             alert('khong thanh cong');

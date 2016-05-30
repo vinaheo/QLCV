@@ -187,5 +187,15 @@ namespace QLCV.DAO
                 return result;
             }
         }
+
+        public List<CONGVIEC> GetCongViecs()
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.CONGVIECs.ToList();
+                return result;
+            }
+        }
+
     }
 }

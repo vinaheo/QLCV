@@ -18,6 +18,7 @@ namespace QLCV
         public QLCVEntities()
             : base("name=QLCVEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

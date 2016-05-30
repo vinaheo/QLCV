@@ -117,7 +117,9 @@
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotation\CheckLoginAnnotation.cs" />
     <Compile Include="Annotation\Custom_Annotation.cs" />
+    <Compile Include="Annotation\RoleAnnotation.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -169,6 +171,7 @@
     </Compile>
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Report\ReportTaskViewModel.cs" />
+    <Compile Include="Models\Report\ReportUsersViewModel.cs" />
     <Compile Include="Models\Task\TaskDetailViewModel.cs" />
     <Compile Include="Models\Task\TaskIndexViewModel.cs" />
     <Compile Include="Models\Task\TaskInsertViewModel.cs" />
@@ -1062,6 +1065,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\task.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\Error.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1083,6 +1087,7 @@
     <Content Include="Views\Task\Detail.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\IndexAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

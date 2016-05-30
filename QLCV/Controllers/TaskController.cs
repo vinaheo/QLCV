@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 using System.IO;
+using QLCV.Annotation;
 
 namespace QLCV.Controllers
 {
@@ -15,40 +16,36 @@ namespace QLCV.Controllers
         
         DAO_Task dao_task = new DAO_Task();
         DAO_User dao_user = new DAO_User();
-        //public NGUOIDUNG userLogin = Session["USER"] as NGUOIDUNG;
-        //public void CheckLoggingIn()
-        //{
-        //    if (Session["USER"] == null)
-        //    {
-        //        RedirectToAction("Login", "Account");
-        //    }
-        //    else
-        //    {
-        //        userLogin = Session["USER"] as NGUOIDUNG;
-        //    }
-        //}
+
         //
         // GET: /Task/
         public ActionResult Index(int idFilter)
         {
-            //CheckLoggingIn();
             ViewBag.idFilter = idFilter;
             return View();
         }
 
         [HttpGet]
+        [RoleAnnotation(RoleId = 2)]
+        //[Authorize]
         public ActionResult Insert()
         {
-            //CheckLoggingIn();
-            List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
-            ViewBag.NDs = nds;
-            return View();
+            if (ModelState.IsValid)
+            {
+                List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+                ViewBag.NDs = nds;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
 
         [HttpPost]
         public ActionResult Insert(TaskInsertViewModel model)
         {
-            //CheckLoggingIn();
             if (model.numPC == 0)
             {
                 ModelState.AddModelError("Error", "Ex: This login failed");
