@@ -39,5 +39,14 @@ namespace QLCV.DAO
                 return result;
             }
         }
+
+        public NGUOIDUNG GetNguoiDungById(int id)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.NGUOIDUNGs.Find(id);
+                return result;
+            }
+        }
     }
 }

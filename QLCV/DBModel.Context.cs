@@ -18,7 +18,6 @@ namespace QLCV
         public QLCVEntities()
             : base("name=QLCVEntities")
         {
-            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -26,6 +25,7 @@ namespace QLCV
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<ACTION> ACTIONS { get; set; }
         public DbSet<BAOCAOCONGVIEC> BAOCAOCONGVIECs { get; set; }
         public DbSet<BINHLUAN> BINHLUANs { get; set; }
         public DbSet<CHUCDANH> CHUCDANHs { get; set; }
@@ -33,6 +33,7 @@ namespace QLCV
         public DbSet<CONGVIEC> CONGVIECs { get; set; }
         public DbSet<DANGCONGVIEC> DANGCONGVIECs { get; set; }
         public DbSet<DANGPHANCONG> DANGPHANCONGs { get; set; }
+        public DbSet<GROUP> GROUPS { get; set; }
         public DbSet<NGUOIDUNG> NGUOIDUNGs { get; set; }
         public DbSet<PHANCONG> PHANCONGs { get; set; }
         public DbSet<PHONGBAN> PHONGBANs { get; set; }

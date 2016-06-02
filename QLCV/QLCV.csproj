@@ -117,26 +117,31 @@
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACTION.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Annotation\BaseAuthorizeAnnotation.cs" />
     <Compile Include="Annotation\CheckLoginAnnotation.cs" />
     <Compile Include="Annotation\Custom_Annotation.cs" />
+    <Compile Include="Annotation\GroupAnnotation.cs" />
     <Compile Include="Annotation\RoleAnnotation.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BAOCAOCONGVIEC.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="BINHLUAN.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CHUCDANH.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CHUCVU.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CONGVIEC.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -144,30 +149,34 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="DANGCONGVIEC.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DANGPHANCONG.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAO\DAO_Group.cs" />
     <Compile Include="DAO\DAO_Task.cs" />
     <Compile Include="DAO\DAO_User.cs" />
+    <Compile Include="DBModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
+    <Compile Include="GROUP.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Report\ReportTaskViewModel.cs" />
@@ -176,18 +185,22 @@
     <Compile Include="Models\Task\TaskIndexViewModel.cs" />
     <Compile Include="Models\Task\TaskInsertViewModel.cs" />
     <Compile Include="NGUOIDUNG.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PHANCONG.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PHONGBAN.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SentMail\MailInsertTask.cs" />
+    <Compile Include="SentMail\MailReminder.cs" />
+    <Compile Include="SentMail\MailUpdateTask.cs" />
     <Compile Include="TRANGTHAI.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utility\Schedule.cs" />
     <Compile Include="Utility\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1031,22 +1044,22 @@
     <Content Include="bootstrap-tagsinput\dist\bootstrap-tagsinput-angular.min.js.map" />
     <Content Include="bootstrap-tagsinput\dist\bootstrap-tagsinput.less" />
     <Content Include="bootstrap-tagsinput\dist\bootstrap-tagsinput.min.js.map" />
-    <EntityDeploy Include="Model.edmx">
+    <EntityDeploy Include="DBModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>DBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Model.Context.tt">
+    <Content Include="DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
+      <DependentUpon>DBModel.edmx</DependentUpon>
+      <LastGenOutput>DBModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
+    <Content Include="DBModel.edmx.diagram">
+      <DependentUpon>DBModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Model.tt">
+    <Content Include="DBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
+      <DependentUpon>DBModel.edmx</DependentUpon>
+      <LastGenOutput>DBModel.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common.js" />
@@ -1065,8 +1078,13 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\task.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\MailTemplate\MailInsertTask.html" />
+    <Content Include="Views\MailTemplate\MailReminder.html" />
+    <Content Include="Views\MailTemplate\MailUpdateTask.html" />
     <Content Include="Views\Shared\Error.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1088,6 +1106,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Report\IndexAll.cshtml" />
+    <Content Include="Views\Account\ManagementAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace QLCV.Annotation
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class RoleAnnotation : AuthorizeAttribute
+    public class RoleAnnotation : BaseAuthorizeAnnotation
     {
         public int RoleId { get; set; }
         protected override bool AuthorizeCore(HttpContextBase httpContext)

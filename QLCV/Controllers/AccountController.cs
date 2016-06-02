@@ -42,5 +42,10 @@ namespace QLCV.Controllers
             Session.RemoveAll();
             return RedirectToAction("Login");
         }
+
+        public ActionResult ManagementAccount()
+        {
+            return View();
+        }
 	}
 }

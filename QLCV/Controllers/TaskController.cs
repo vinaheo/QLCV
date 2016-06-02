@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Configuration;
 using System.IO;
 using QLCV.Annotation;
+using QLCV.SentMail;
 
 namespace QLCV.Controllers
 {
@@ -16,6 +17,8 @@ namespace QLCV.Controllers
         
         DAO_Task dao_task = new DAO_Task();
         DAO_User dao_user = new DAO_User();
+        MailInsertTask mailInsertTask = new MailInsertTask();
+        MailUpdateTask mailUpdateTask = new MailUpdateTask();
 
         //
         // GET: /Task/
@@ -26,7 +29,8 @@ namespace QLCV.Controllers
         }
 
         [HttpGet]
-        [RoleAnnotation(RoleId = 2)]
+        //[RoleAnnotation(RoleId = 2)]
+        //[GroupAnnotation(Action="~/Task/Insert")]
         //[Authorize]
         public ActionResult Insert()
         {
@@ -85,15 +89,19 @@ namespace QLCV.Controllers
             }
             //Upload(model.taptin, DateTime.Now, 1);
             cv.PHANCONGs = pcs;
-            int idFileName = dao_task.InsertTask(cv);
+            int idCongViec = dao_task.InsertTask(cv);
             if (model.taptin != null)
             {
-                string fileName = idFileName.ToString() + "_" + cv.NGAYTAO.GetValueOrDefault().Day + cv.NGAYTAO.GetValueOrDefault().Month + cv.NGAYTAO.GetValueOrDefault().Year + cv.NGAYTAO.GetValueOrDefault().Hour + cv.NGAYTAO.GetValueOrDefault().Minute + cv.NGAYTAO.GetValueOrDefault().Second;
+                string fileName = idCongViec.ToString() + "_" + cv.NGAYTAO.GetValueOrDefault().Day + cv.NGAYTAO.GetValueOrDefault().Month + cv.NGAYTAO.GetValueOrDefault().Year + cv.NGAYTAO.GetValueOrDefault().Hour + cv.NGAYTAO.GetValueOrDefault().Minute + cv.NGAYTAO.GetValueOrDefault().Second;
                 Upload(model.taptin, fileName);
-                dao_task.UpdateTaskAfterInsert(idFileName, fileName + extension);
+                dao_task.UpdateTaskAfterInsert(idCongViec, fileName + extension);
             }
-
-            return RedirectToAction("Detail", new { id = idFileName });
+            List<int> listNguoiDungTrongCongViec = dao_task.GetNGuoiDungTrongCongViec(idCongViec);
+            foreach (int idND in listNguoiDungTrongCongViec.Distinct())
+            {
+                mailInsertTask.DoSentMail(dao_user.GetNguoiDungById(cv.IDNGUOITAO.GetValueOrDefault()).TENNGUOIDUNG, cv.TIEUDE, dao_user.GetNguoiDungById(idND).EMAIL);
+            }
+            return RedirectToAction("Detail", new { id = idCongViec });
         }
 
         public ActionResult Detail(int id)
@@ -102,7 +110,7 @@ namespace QLCV.Controllers
             NGUOIDUNG userLogin = Session["USER"] as NGUOIDUNG;
             CONGVIEC cv = dao_task.GetCONGVIEC(id);
             List<int> listNguoiDungTrongCongViec = dao_task.GetNGuoiDungTrongCongViec(id);
-            if (!listNguoiDungTrongCongViec.Contains(userLogin.ID) && userLogin.ID != cv.IDNGUOITAO)
+            if (!listNguoiDungTrongCongViec.Contains(userLogin.ID) && userLogin.ID != cv.IDNGUOITAO && userLogin.IDCHUCVU != 1)
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -180,6 +188,13 @@ namespace QLCV.Controllers
             cv.NGAYCAPNHAT = DateTime.Now;
             cv.PHANCONGs = pcs;
             dao_task.UpdateTask(cv);
+            List<int> listNguoiDungTrongCongViec = dao_task.GetNGuoiDungTrongCongViec(model.id);
+            NGUOIDUNG userLogin = Session["USER"] as NGUOIDUNG;
+
+            foreach (int idND in listNguoiDungTrongCongViec.Distinct())
+            {
+                mailUpdateTask.DoSentMail(userLogin.TENNGUOIDUNG, cv.TIEUDE, dao_user.GetNguoiDungById(idND).EMAIL);
+            }
             return RedirectToAction("Detail", new { id = model.id });
         }
 

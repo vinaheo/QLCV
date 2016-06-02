@@ -3,19 +3,46 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace QLCV.Annotation
 {
-    public class CheckLoginAnnotation : ValidationAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    public class CheckLoginAnnotation : AuthorizeAttribute
     {
-        public NGUOIDUNG NguoiDung { get; set; }
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        //protected override bool AuthorizeCore(HttpContextBase httpContext)
+        //{
+        //    if (HttpContext.Current.Session["USER"] == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
+        //}
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            //if (HttpContext.Current.Session["USER"] == null)
-            //{
-            //    return RedirectToAction("Login", "Account");
-            //}
-            return base.IsValid(value, validationContext);
+            if (HttpContext.Current.Session["USER"] == null)
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                {
+                    controller = "Account",
+                    action = "Login"
+                }));
+            }
+        }
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            if (HttpContext.Current.Session["USER"] == null)
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                {
+                    controller = "Account",
+                    action = "Login"
+                }));
+            }
         }
     }
 }

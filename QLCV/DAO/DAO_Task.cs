@@ -197,5 +197,14 @@ namespace QLCV.DAO
             }
         }
 
+        public List<CONGVIEC> GetCongViecTrongNgay(DateTime datetime)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.PHANCONGs.Where(a => a.NGAYKETTHUC == datetime).Select(a => a.CONGVIEC).ToList();
+                return result;
+            }
+        }
+
     }
 }

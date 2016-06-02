@@ -20,6 +20,7 @@ namespace QLCV
             this.BINHLUANs = new HashSet<BINHLUAN>();
             this.CONGVIECs = new HashSet<CONGVIEC>();
             this.PHANCONGs = new HashSet<PHANCONG>();
+            this.GROUPS = new HashSet<GROUP>();
         }
     
         public int ID { get; set; }
@@ -40,5 +41,6 @@ namespace QLCV
         public virtual ICollection<CONGVIEC> CONGVIECs { get; set; }
         public virtual PHONGBAN PHONGBAN { get; set; }
         public virtual ICollection<PHANCONG> PHANCONGs { get; set; }
+        public virtual ICollection<GROUP> GROUPS { get; set; }
     }
 }

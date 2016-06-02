@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="QLCVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACTIONS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACTION" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="BAOCAOCONGVIEC">
           <Key>
             <PropertyRef Name="ID" />
@@ -73,6 +80,29 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TEN" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="GROUP_ACTION">
+          <Key>
+            <PropertyRef Name="IDGROUP" />
+            <PropertyRef Name="IDACTION" />
+          </Key>
+          <Property Name="IDGROUP" Type="int" Nullable="false" />
+          <Property Name="IDACTION" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GROUP_NGUOIDUNG">
+          <Key>
+            <PropertyRef Name="IDGROUP" />
+            <PropertyRef Name="IDNGUOIDUNG" />
+          </Key>
+          <Property Name="IDGROUP" Type="int" Nullable="false" />
+          <Property Name="IDNGUOIDUNG" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GROUPS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TENGROUP" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="NGUOIDUNG">
           <Key>
@@ -193,6 +223,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_GROUP_ACTION_ACTION">
+          <End Role="ACTIONS" Type="Self.ACTIONS" Multiplicity="1" />
+          <End Role="GROUP_ACTION" Type="Self.GROUP_ACTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIONS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GROUP_ACTION">
+              <PropertyRef Name="IDACTION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GROUP_ACTION_GROUP">
+          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
+          <End Role="GROUP_ACTION" Type="Self.GROUP_ACTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUPS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GROUP_ACTION">
+              <PropertyRef Name="IDGROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GROUP_NGUOIDUNG_GROUP">
+          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
+          <End Role="GROUP_NGUOIDUNG" Type="Self.GROUP_NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUPS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GROUP_NGUOIDUNG">
+              <PropertyRef Name="IDGROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GROUP_NGUOIDUNG_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="1" />
+          <End Role="GROUP_NGUOIDUNG" Type="Self.GROUP_NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GROUP_NGUOIDUNG">
+              <PropertyRef Name="IDNGUOIDUNG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_NGUOIDUNG_CHUCDANH">
           <End Role="CHUCDANH" Type="Self.CHUCDANH" Multiplicity="0..1" />
           <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
@@ -278,6 +356,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="QLCVModelStoreContainer">
+          <EntitySet Name="ACTIONS" EntityType="Self.ACTIONS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BAOCAOCONGVIEC" EntityType="Self.BAOCAOCONGVIEC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BINHLUAN" EntityType="Self.BINHLUAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHUCDANH" EntityType="Self.CHUCDANH" Schema="dbo" store:Type="Tables" />
@@ -285,6 +364,9 @@
           <EntitySet Name="CONGVIEC" EntityType="Self.CONGVIEC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DANGCONGVIEC" EntityType="Self.DANGCONGVIEC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DANGPHANCONG" EntityType="Self.DANGPHANCONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GROUP_ACTION" EntityType="Self.GROUP_ACTION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GROUP_NGUOIDUNG" EntityType="Self.GROUP_NGUOIDUNG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GROUPS" EntityType="Self.GROUPS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NGUOIDUNG" EntityType="Self.NGUOIDUNG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PHANCONG" EntityType="Self.PHANCONG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PHONGBAN" EntityType="Self.PHONGBAN" Schema="dbo" store:Type="Tables" />
@@ -312,6 +394,22 @@
           <AssociationSet Name="fk_CONGVIEC_NGUOIDUNG" Association="Self.fk_CONGVIEC_NGUOIDUNG">
             <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
             <End Role="CONGVIEC" EntitySet="CONGVIEC" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GROUP_ACTION_ACTION" Association="Self.fk_GROUP_ACTION_ACTION">
+            <End Role="ACTIONS" EntitySet="ACTIONS" />
+            <End Role="GROUP_ACTION" EntitySet="GROUP_ACTION" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GROUP_ACTION_GROUP" Association="Self.fk_GROUP_ACTION_GROUP">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="GROUP_ACTION" EntitySet="GROUP_ACTION" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GROUP_NGUOIDUNG_GROUP" Association="Self.fk_GROUP_NGUOIDUNG_GROUP">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="GROUP_NGUOIDUNG" EntitySet="GROUP_NGUOIDUNG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GROUP_NGUOIDUNG_NGUOIDUNG" Association="Self.fk_GROUP_NGUOIDUNG_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="GROUP_NGUOIDUNG" EntitySet="GROUP_NGUOIDUNG" />
           </AssociationSet>
           <AssociationSet Name="fk_NGUOIDUNG_CHUCDANH" Association="Self.fk_NGUOIDUNG_CHUCDANH">
             <End Role="CHUCDANH" EntitySet="CHUCDANH" />
@@ -347,6 +445,14 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QLCVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACTION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACTION1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="GROUPS" Relationship="Self.GROUP_ACTION" FromRole="ACTIONS" ToRole="GROUPS" />
+        </EntityType>
         <EntityType Name="BAOCAOCONGVIEC">
           <Key>
             <PropertyRef Name="ID" />
@@ -429,6 +535,15 @@
           <Property Name="TEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANDONG_DANGPHANCONG" FromRole="DANGPHANCONG" ToRole="PHANCONG" />
         </EntityType>
+        <EntityType Name="GROUP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TENGROUP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ACTIONS" Relationship="Self.GROUP_ACTION" FromRole="GROUPS" ToRole="ACTIONS" />
+          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.GROUP_NGUOIDUNG" FromRole="GROUPS" ToRole="NGUOIDUNG" />
+        </EntityType>
         <EntityType Name="NGUOIDUNG">
           <Key>
             <PropertyRef Name="ID" />
@@ -450,6 +565,7 @@
           <NavigationProperty Name="CONGVIECs" Relationship="Self.fk_CONGVIEC_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="CONGVIEC" />
           <NavigationProperty Name="PHONGBAN" Relationship="Self.fk_NGUOIDUNG_PHONGBAN" FromRole="NGUOIDUNG" ToRole="PHONGBAN" />
           <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANCONG_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="PHANCONG" />
+          <NavigationProperty Name="GROUPS" Relationship="Self.GROUP_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="GROUPS" />
         </EntityType>
         <EntityType Name="PHANCONG">
           <Key>
@@ -645,7 +761,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="GROUP_ACTION">
+          <End Role="ACTIONS" Type="Self.ACTION" Multiplicity="*" />
+          <End Role="GROUPS" Type="Self.GROUP" Multiplicity="*" />
+        </Association>
+        <Association Name="GROUP_NGUOIDUNG">
+          <End Role="GROUPS" Type="Self.GROUP" Multiplicity="*" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="QLCVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACTIONS" EntityType="Self.ACTION" />
           <EntitySet Name="BAOCAOCONGVIECs" EntityType="Self.BAOCAOCONGVIEC" />
           <EntitySet Name="BINHLUANs" EntityType="Self.BINHLUAN" />
           <EntitySet Name="CHUCDANHs" EntityType="Self.CHUCDANH" />
@@ -653,6 +778,7 @@
           <EntitySet Name="CONGVIECs" EntityType="Self.CONGVIEC" />
           <EntitySet Name="DANGCONGVIECs" EntityType="Self.DANGCONGVIEC" />
           <EntitySet Name="DANGPHANCONGs" EntityType="Self.DANGPHANCONG" />
+          <EntitySet Name="GROUPS" EntityType="Self.GROUP" />
           <EntitySet Name="NGUOIDUNGs" EntityType="Self.NGUOIDUNG" />
           <EntitySet Name="PHANCONGs" EntityType="Self.PHANCONG" />
           <EntitySet Name="PHONGBANs" EntityType="Self.PHONGBAN" />
@@ -709,6 +835,14 @@
             <End Role="TRANGTHAI" EntitySet="TRANGTHAIs" />
             <End Role="PHANCONG" EntitySet="PHANCONGs" />
           </AssociationSet>
+          <AssociationSet Name="GROUP_ACTION" Association="Self.GROUP_ACTION">
+            <End Role="ACTIONS" EntitySet="ACTIONS" />
+            <End Role="GROUPS" EntitySet="GROUPS" />
+          </AssociationSet>
+          <AssociationSet Name="GROUP_NGUOIDUNG" Association="Self.GROUP_NGUOIDUNG">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -716,6 +850,14 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="QLCVModelStoreContainer" CdmEntityContainer="QLCVEntities">
+          <EntitySetMapping Name="ACTIONS">
+            <EntityTypeMapping TypeName="QLCVModel.ACTION">
+              <MappingFragment StoreEntitySet="ACTIONS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ACTION1" ColumnName="ACTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BAOCAOCONGVIECs">
             <EntityTypeMapping TypeName="QLCVModel.BAOCAOCONGVIEC">
               <MappingFragment StoreEntitySet="BAOCAOCONGVIEC">
@@ -792,6 +934,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="GROUPS">
+            <EntityTypeMapping TypeName="QLCVModel.GROUP">
+              <MappingFragment StoreEntitySet="GROUPS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TENGROUP" ColumnName="TENGROUP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="NGUOIDUNGs">
             <EntityTypeMapping TypeName="QLCVModel.NGUOIDUNG">
               <MappingFragment StoreEntitySet="NGUOIDUNG">
@@ -841,6 +991,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="GROUP_ACTION" TypeName="QLCVModel.GROUP_ACTION" StoreEntitySet="GROUP_ACTION">
+            <EndProperty Name="ACTIONS">
+              <ScalarProperty Name="ID" ColumnName="IDACTION" />
+            </EndProperty>
+            <EndProperty Name="GROUPS">
+              <ScalarProperty Name="ID" ColumnName="IDGROUP" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="GROUP_NGUOIDUNG" TypeName="QLCVModel.GROUP_NGUOIDUNG" StoreEntitySet="GROUP_NGUOIDUNG">
+            <EndProperty Name="GROUPS">
+              <ScalarProperty Name="ID" ColumnName="IDGROUP" />
+            </EndProperty>
+            <EndProperty Name="NGUOIDUNG">
+              <ScalarProperty Name="ID" ColumnName="IDNGUOIDUNG" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

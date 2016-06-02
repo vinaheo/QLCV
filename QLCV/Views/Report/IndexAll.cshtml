@@ -40,6 +40,7 @@
                                     <th>Số công việc chưa xử lý</th>
                                     <th>Số công việc đang xử lý</th>
                                     <th>Số công việc đã xử lý</th>
+                                    <th>Tổng số công việc</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,14 +79,59 @@
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
-
                                             </td>
-
-                                            <td class="text-center">@dao_task.GetCongViecTheoPhanCong(nd.ID, 2).Count</td>
-                                            <td class="text-center">@dao_task.GetCongViecTheoPhanCong(nd.ID, 4).Count</td>
+                                            <td>
+                                                <a data-toggle="modal" data-target="#modalCongViecDangXuLy@(nd.ID)">@cvDangXuLy.Count</a>
+                                                <div id="modalCongViecDangXuLy@(nd.ID)" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog">
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <h4 class="modal-title">Chi tiết công việc đang xử lý</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul>
+                                                                    @foreach (CONGVIEC cv in cvDangXuLy)
+                                                                    {
+                                                                        <li><a href="~/Task/Detail/@cv.ID">@cv.ID - @cv.TIEUDE - @cv.NGAYTAO.GetValueOrDefault().ToString("dd/MM/yyyy")</a></li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a data-toggle="modal" data-target="#modalCongViecDaXuLy@(nd.ID)">@cvDaXuLy.Count</a>
+                                                <div id="modalCongViecDaXuLy@(nd.ID)" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog">
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <h4 class="modal-title">Chi tiết công việc đã xử lý</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul>
+                                                                    @foreach (CONGVIEC cv in cvDaXuLy)
+                                                                    {
+                                                                        <li><a href="~/Task/Detail/@cv.ID">@cv.ID - @cv.TIEUDE - @cv.NGAYTAO.GetValueOrDefault().ToString("dd/MM/yyyy")</a></li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     }
                                 }

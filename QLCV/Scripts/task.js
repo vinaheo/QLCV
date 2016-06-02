@@ -25,7 +25,7 @@ function initDatepicker() {
 initDatepicker();
 
 function checkDate() {
-    if ($('#dpNgayKetThuc').val() < $('#dpNgayBatDau').val()) {
+    if ($("#dpNgayKetThuc").datepicker("getDate") < $("#dpNgayBatDau").datepicker("getDate")) {
         $('#dpNgayKetThuc').val("");
     }
 };
@@ -123,6 +123,7 @@ function test() {
 }
 
 test();
+
 function openEditPC(i) {
     $("#txtEditTenPhanCong" + i).removeClass('hidden');
     $("#spanTenPhanCong" + i).addClass('hidden');
@@ -270,6 +271,7 @@ function displayEdit() {
     $('#btnEditTask').removeClass('hidden');
     $('#uploadPlace').removeClass('hidden');
 }
+
 $('.btnCancel').click(function (e) {
     e.preventDefault();
     $('#tieude').addClass('hidden');
@@ -283,6 +285,7 @@ $('.btnCancel').click(function (e) {
     $('.btnRemovePC').addClass('hidden');
     $('#uploadPlace').addClass('hidden');
 });
+
 function closeEdit() {
     $('#tieude').addClass('hidden');
     $('#noidung').addClass('hidden');
