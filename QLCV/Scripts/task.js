@@ -4,6 +4,7 @@ function initSelectNguoiNhan() {
         placeholder: "Select a state"
     });
 }
+
 initSelectNguoiNhan();
 
 
@@ -376,15 +377,62 @@ function FilterTask() {
             var data = response.list;
             $('tbody').empty();
             for (var i in data) {
-                
+
                 var stringAppend = "<tr>"
-                                    + "<td>" + data[i].ID +"</td>"
+                                    + "<td>" + data[i].ID + "</td>"
                                     + "<td>" + data[i].TIEUDE + "</td>"
                                     + "<td>" + ToJavaScriptDate(data[i].NGAYTAO) + "</td>"
                                     + "<td>" + data[i].HOANTHANH + "</td>"
                                     + "<tr>";
                 $('tbody').append(stringAppend);
             }
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function InsertNguoiDung() {
+    var nd = {
+        TENDANGNHAP: $('#tendangnhap').val(),
+        TENNGUOIDUNG: $('#tennguoidung').val(),
+        EMAIL: $('#email').val(),
+        IDPHONGBAN: $("#slPhongBans option:selected").val(),
+        IDGROUP: $("#slGroups option:selected").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "../Account/InsertNguoiDung",
+        data: JSON.stringify({ nd: nd }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            document.location.reload();
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function UpdateNguoiDung(i) {
+    var nd = {
+        ID: i,
+        TENDANGNHAP: $('#tendangnhap' + i).val(),
+        TENNGUOIDUNG: $('#tennguoidung' + i).val(),
+        EMAIL: $('#email' + i).val(),
+        IDPHONGBAN: $("#slPhongBans" + i + " option:selected").val(),
+        IDGROUP: $("#slGroups" + i + " option:selected").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "../Account/UpdateNguoiDung",
+        data: JSON.stringify({ nd: nd }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            document.location.reload();
         },
         failure: function (response) {
             alert('khong thanh cong');

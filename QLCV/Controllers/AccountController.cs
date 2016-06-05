@@ -47,5 +47,20 @@ namespace QLCV.Controllers
         {
             return View();
         }
+
+        public string InsertNguoiDung(NGUOIDUNG nd)
+        {
+            nd.TRANGTHAI = true;
+            nd.NGAYTAO = DateTime.Now;
+            nd.MATKHAU = "123";
+            dao_user.InsertNguoiDung(nd);
+            return "true";
+        }
+
+        public string UpdateNguoiDung(NGUOIDUNG nd)
+        {
+            dao_user.UpdateNguoiDung(nd);
+            return "true";
+        }
 	}
 }

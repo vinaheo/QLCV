@@ -22,6 +22,7 @@ namespace QLCV.Controllers
 
         //
         // GET: /Task/
+        [RoleAnnotation(RoleId = 2)]
         public ActionResult Index(int idFilter)
         {
             ViewBag.idFilter = idFilter;
@@ -29,7 +30,7 @@ namespace QLCV.Controllers
         }
 
         [HttpGet]
-        //[RoleAnnotation(RoleId = 2)]
+        [RoleAnnotation(RoleId = 2)]
         //[GroupAnnotation(Action="~/Task/Insert")]
         //[Authorize]
         public ActionResult Insert()
@@ -48,6 +49,7 @@ namespace QLCV.Controllers
         }
 
         [HttpPost]
+        [RoleAnnotation(RoleId = 2)]
         public ActionResult Insert(TaskInsertViewModel model)
         {
             if (model.numPC == 0)
@@ -103,7 +105,7 @@ namespace QLCV.Controllers
             }
             return RedirectToAction("Detail", new { id = idCongViec });
         }
-
+        [RoleAnnotation(RoleId = 2)]
         public ActionResult Detail(int id)
         {
             //CheckLoggingIn();
@@ -154,6 +156,7 @@ namespace QLCV.Controllers
         }
 
         [HttpPost]
+        [RoleAnnotation(RoleId = 2)]
         public ActionResult Edit(TaskDetailViewModel model)
         {
             CONGVIEC cv = dao_task.GetCONGVIEC(model.id);
@@ -197,7 +200,7 @@ namespace QLCV.Controllers
             }
             return RedirectToAction("Detail", new { id = model.id });
         }
-
+        [RoleAnnotation(RoleId = 2)]
         public string InsertBAOCAO(string idnt, string idcv, string idpc, string noidung)
         {
             BAOCAOCONGVIEC bc = new BAOCAOCONGVIEC();
@@ -209,13 +212,13 @@ namespace QLCV.Controllers
             dao_task.InsertBAOCAO(bc);
             return "true";
         }
-
+        [RoleAnnotation(RoleId = 2)]
         public string TiepNhanPhanCong(int idCongViec, int idPhanCong)
         {
             dao_task.UpdateTrangThaiPhanCong(idCongViec, idPhanCong);
             return "true";
         }
-
+        [RoleAnnotation(RoleId = 2)]
         public string HoanThanhCongViec(int idCongViec)
         {
             List<PHANCONG> pcs = dao_task.GetPhanCongTheoCongViec(idCongViec);
@@ -237,6 +240,7 @@ namespace QLCV.Controllers
         }
 
         [HttpPost]
+        [RoleAnnotation(RoleId = 2)]
         public Boolean Upload(HttpPostedFileBase file, string fileName)
         {
             try
@@ -285,6 +289,7 @@ namespace QLCV.Controllers
             }
         }
 
+        [RoleAnnotation(RoleId = 2)]
         public FileResult Download(string file)
         {
             return File(Server.MapPath("~/App_Data/") + file, System.Net.Mime.MediaTypeNames.Application.Octet, file);

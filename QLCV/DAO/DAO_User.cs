@@ -48,5 +48,45 @@ namespace QLCV.DAO
                 return result;
             }
         }
+
+        public List<PHONGBAN> GetPhongBans()
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.PHONGBANs.ToList();
+                return result;
+            }
+        }
+
+        public List<GROUP> GetGroups()
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.GROUPS.ToList();
+                return result;
+            }
+        }
+
+        public void InsertNguoiDung(NGUOIDUNG nd)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                e.NGUOIDUNGs.Add(nd);
+                e.SaveChanges();
+            }
+        }
+
+        public void UpdateNguoiDung(NGUOIDUNG updateND)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                NGUOIDUNG nd = e.NGUOIDUNGs.Find(updateND.ID);
+                nd.TENNGUOIDUNG = updateND.TENNGUOIDUNG;
+                nd.EMAIL = updateND.EMAIL;
+                nd.IDPHONGBAN = updateND.IDPHONGBAN;
+                nd.IDGROUP = updateND.IDGROUP;
+                e.SaveChanges();
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3d651ee8a0b04007b53ce8e06d162200" Name="Diagram1">
+      <Diagram DiagramId="477ef34f469f430984abe26f1e0e9cc2" Name="Diagram1">
         <EntityTypeShape EntityType="QLCVModel.ACTION" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.BAOCAOCONGVIEC" Width="1.5" PointX="7.5" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.BINHLUAN" Width="1.5" PointX="10.5" PointY="6.75" IsExpanded="true" />
@@ -14,10 +14,10 @@
         <EntityTypeShape EntityType="QLCVModel.DANGCONGVIEC" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.DANGPHANCONG" Width="1.5" PointX="7.5" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.GROUP" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLCVModel.NGUOIDUNG" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLCVModel.PHANCONG" Width="1.5" PointX="9.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.NGUOIDUNG" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.PHANCONG" Width="1.5" PointX="9.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.PHONGBAN" Width="1.5" PointX="3" PointY="12.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLCVModel.TRANGTHAI" Width="1.5" PointX="7.5" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLCVModel.TRANGTHAI" Width="1.5" PointX="7.5" PointY="13.25" IsExpanded="true" />
         <AssociationConnector Association="QLCVModel.fk_BAOCAO_CONGVIEC" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_BAOCAO_NGUOIDUNG" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_BINHLUAN_CONGVIEC" ManuallyRouted="false" />
@@ -28,11 +28,11 @@
         <AssociationConnector Association="QLCVModel.fk_CONGVIEC_NGUOIDUNG" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_PHANCONG_CONGVIEC" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_PHANDONG_DANGPHANCONG" ManuallyRouted="false" />
+        <AssociationConnector Association="QLCVModel.fk_NGUOIDUNG_GROUP" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_NGUOIDUNG_PHONGBAN" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_PHANCONG_NGUOIDUNG" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.fk_PHANCONG_TRANGTHAI" ManuallyRouted="false" />
         <AssociationConnector Association="QLCVModel.GROUP_ACTION" ManuallyRouted="false" />
-        <AssociationConnector Association="QLCVModel.GROUP_NGUOIDUNG" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

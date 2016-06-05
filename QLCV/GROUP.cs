@@ -16,14 +16,14 @@ namespace QLCV
     {
         public GROUP()
         {
-            this.ACTIONS = new HashSet<ACTION>();
             this.NGUOIDUNGs = new HashSet<NGUOIDUNG>();
+            this.ACTIONS = new HashSet<ACTION>();
         }
     
         public int ID { get; set; }
         public string TENGROUP { get; set; }
     
-        public virtual ICollection<ACTION> ACTIONS { get; set; }
         public virtual ICollection<NGUOIDUNG> NGUOIDUNGs { get; set; }
+        public virtual ICollection<ACTION> ACTIONS { get; set; }
     }
 }

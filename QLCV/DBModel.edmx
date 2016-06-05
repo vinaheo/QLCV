@@ -89,14 +89,6 @@
           <Property Name="IDGROUP" Type="int" Nullable="false" />
           <Property Name="IDACTION" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="GROUP_NGUOIDUNG">
-          <Key>
-            <PropertyRef Name="IDGROUP" />
-            <PropertyRef Name="IDNGUOIDUNG" />
-          </Key>
-          <Property Name="IDGROUP" Type="int" Nullable="false" />
-          <Property Name="IDNGUOIDUNG" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="GROUPS">
           <Key>
             <PropertyRef Name="ID" />
@@ -118,6 +110,7 @@
           <Property Name="IDPHONGBAN" Type="int" />
           <Property Name="IDCHUCDANH" Type="int" />
           <Property Name="IDCHUCVU" Type="int" />
+          <Property Name="IDGROUP" Type="int" />
         </EntityType>
         <EntityType Name="PHANCONG">
           <Key>
@@ -247,30 +240,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_GROUP_NGUOIDUNG_GROUP">
-          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="1" />
-          <End Role="GROUP_NGUOIDUNG" Type="Self.GROUP_NGUOIDUNG" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GROUPS">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="GROUP_NGUOIDUNG">
-              <PropertyRef Name="IDGROUP" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_GROUP_NGUOIDUNG_NGUOIDUNG">
-          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="1" />
-          <End Role="GROUP_NGUOIDUNG" Type="Self.GROUP_NGUOIDUNG" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NGUOIDUNG">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="GROUP_NGUOIDUNG">
-              <PropertyRef Name="IDNGUOIDUNG" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_NGUOIDUNG_CHUCDANH">
           <End Role="CHUCDANH" Type="Self.CHUCDANH" Multiplicity="0..1" />
           <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
@@ -292,6 +261,18 @@
             </Principal>
             <Dependent Role="NGUOIDUNG">
               <PropertyRef Name="IDCHUCVU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_NGUOIDUNG_GROUP">
+          <End Role="GROUPS" Type="Self.GROUPS" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUPS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDGROUP" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -365,7 +346,6 @@
           <EntitySet Name="DANGCONGVIEC" EntityType="Self.DANGCONGVIEC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DANGPHANCONG" EntityType="Self.DANGPHANCONG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GROUP_ACTION" EntityType="Self.GROUP_ACTION" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="GROUP_NGUOIDUNG" EntityType="Self.GROUP_NGUOIDUNG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GROUPS" EntityType="Self.GROUPS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NGUOIDUNG" EntityType="Self.NGUOIDUNG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PHANCONG" EntityType="Self.PHANCONG" Schema="dbo" store:Type="Tables" />
@@ -403,20 +383,16 @@
             <End Role="GROUPS" EntitySet="GROUPS" />
             <End Role="GROUP_ACTION" EntitySet="GROUP_ACTION" />
           </AssociationSet>
-          <AssociationSet Name="fk_GROUP_NGUOIDUNG_GROUP" Association="Self.fk_GROUP_NGUOIDUNG_GROUP">
-            <End Role="GROUPS" EntitySet="GROUPS" />
-            <End Role="GROUP_NGUOIDUNG" EntitySet="GROUP_NGUOIDUNG" />
-          </AssociationSet>
-          <AssociationSet Name="fk_GROUP_NGUOIDUNG_NGUOIDUNG" Association="Self.fk_GROUP_NGUOIDUNG_NGUOIDUNG">
-            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
-            <End Role="GROUP_NGUOIDUNG" EntitySet="GROUP_NGUOIDUNG" />
-          </AssociationSet>
           <AssociationSet Name="fk_NGUOIDUNG_CHUCDANH" Association="Self.fk_NGUOIDUNG_CHUCDANH">
             <End Role="CHUCDANH" EntitySet="CHUCDANH" />
             <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
           </AssociationSet>
           <AssociationSet Name="fk_NGUOIDUNG_CHUCVU" Association="Self.fk_NGUOIDUNG_CHUCVU">
             <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+          </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_GROUP" Association="Self.fk_NGUOIDUNG_GROUP">
+            <End Role="GROUPS" EntitySet="GROUPS" />
             <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
           </AssociationSet>
           <AssociationSet Name="fk_NGUOIDUNG_PHONGBAN" Association="Self.fk_NGUOIDUNG_PHONGBAN">
@@ -541,8 +517,8 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TENGROUP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.fk_NGUOIDUNG_GROUP" FromRole="GROUPS" ToRole="NGUOIDUNG" />
           <NavigationProperty Name="ACTIONS" Relationship="Self.GROUP_ACTION" FromRole="GROUPS" ToRole="ACTIONS" />
-          <NavigationProperty Name="NGUOIDUNGs" Relationship="Self.GROUP_NGUOIDUNG" FromRole="GROUPS" ToRole="NGUOIDUNG" />
         </EntityType>
         <EntityType Name="NGUOIDUNG">
           <Key>
@@ -558,14 +534,15 @@
           <Property Name="IDPHONGBAN" Type="Int32" />
           <Property Name="IDCHUCDANH" Type="Int32" />
           <Property Name="IDCHUCVU" Type="Int32" />
+          <Property Name="IDGROUP" Type="Int32" />
           <NavigationProperty Name="BAOCAOCONGVIECs" Relationship="Self.fk_BAOCAO_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="BAOCAOCONGVIEC" />
           <NavigationProperty Name="BINHLUANs" Relationship="Self.fk_BINHLUAN_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="BINHLUAN" />
           <NavigationProperty Name="CHUCDANH" Relationship="Self.fk_NGUOIDUNG_CHUCDANH" FromRole="NGUOIDUNG" ToRole="CHUCDANH" />
           <NavigationProperty Name="CHUCVU" Relationship="Self.fk_NGUOIDUNG_CHUCVU" FromRole="NGUOIDUNG" ToRole="CHUCVU" />
           <NavigationProperty Name="CONGVIECs" Relationship="Self.fk_CONGVIEC_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="CONGVIEC" />
+          <NavigationProperty Name="GROUP" Relationship="Self.fk_NGUOIDUNG_GROUP" FromRole="NGUOIDUNG" ToRole="GROUPS" />
           <NavigationProperty Name="PHONGBAN" Relationship="Self.fk_NGUOIDUNG_PHONGBAN" FromRole="NGUOIDUNG" ToRole="PHONGBAN" />
           <NavigationProperty Name="PHANCONGs" Relationship="Self.fk_PHANCONG_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="PHANCONG" />
-          <NavigationProperty Name="GROUPS" Relationship="Self.GROUP_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="GROUPS" />
         </EntityType>
         <EntityType Name="PHANCONG">
           <Key>
@@ -725,6 +702,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_NGUOIDUNG_GROUP">
+          <End Role="GROUPS" Type="Self.GROUP" Multiplicity="0..1" />
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GROUPS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NGUOIDUNG">
+              <PropertyRef Name="IDGROUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_NGUOIDUNG_PHONGBAN">
           <End Role="PHONGBAN" Type="Self.PHONGBAN" Multiplicity="0..1" />
           <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
@@ -764,10 +753,6 @@
         <Association Name="GROUP_ACTION">
           <End Role="ACTIONS" Type="Self.ACTION" Multiplicity="*" />
           <End Role="GROUPS" Type="Self.GROUP" Multiplicity="*" />
-        </Association>
-        <Association Name="GROUP_NGUOIDUNG">
-          <End Role="GROUPS" Type="Self.GROUP" Multiplicity="*" />
-          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="*" />
         </Association>
         <EntityContainer Name="QLCVEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ACTIONS" EntityType="Self.ACTION" />
@@ -823,6 +808,10 @@
             <End Role="DANGPHANCONG" EntitySet="DANGPHANCONGs" />
             <End Role="PHANCONG" EntitySet="PHANCONGs" />
           </AssociationSet>
+          <AssociationSet Name="fk_NGUOIDUNG_GROUP" Association="Self.fk_NGUOIDUNG_GROUP">
+            <End Role="GROUPS" EntitySet="GROUPS" />
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+          </AssociationSet>
           <AssociationSet Name="fk_NGUOIDUNG_PHONGBAN" Association="Self.fk_NGUOIDUNG_PHONGBAN">
             <End Role="PHONGBAN" EntitySet="PHONGBANs" />
             <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
@@ -838,10 +827,6 @@
           <AssociationSet Name="GROUP_ACTION" Association="Self.GROUP_ACTION">
             <End Role="ACTIONS" EntitySet="ACTIONS" />
             <End Role="GROUPS" EntitySet="GROUPS" />
-          </AssociationSet>
-          <AssociationSet Name="GROUP_NGUOIDUNG" Association="Self.GROUP_NGUOIDUNG">
-            <End Role="GROUPS" EntitySet="GROUPS" />
-            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -955,6 +940,7 @@
                 <ScalarProperty Name="IDPHONGBAN" ColumnName="IDPHONGBAN" />
                 <ScalarProperty Name="IDCHUCDANH" ColumnName="IDCHUCDANH" />
                 <ScalarProperty Name="IDCHUCVU" ColumnName="IDCHUCVU" />
+                <ScalarProperty Name="IDGROUP" ColumnName="IDGROUP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -997,14 +983,6 @@
             </EndProperty>
             <EndProperty Name="GROUPS">
               <ScalarProperty Name="ID" ColumnName="IDGROUP" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="GROUP_NGUOIDUNG" TypeName="QLCVModel.GROUP_NGUOIDUNG" StoreEntitySet="GROUP_NGUOIDUNG">
-            <EndProperty Name="GROUPS">
-              <ScalarProperty Name="ID" ColumnName="IDGROUP" />
-            </EndProperty>
-            <EndProperty Name="NGUOIDUNG">
-              <ScalarProperty Name="ID" ColumnName="IDNGUOIDUNG" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
