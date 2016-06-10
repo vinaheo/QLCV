@@ -20,7 +20,8 @@ namespace QLCV
         }
     
         public int ID { get; set; }
-        public string ACTION1 { get; set; }
+        public string ACTIONNAME { get; set; }
+        public string ACTIONURL { get; set; }
     
         public virtual ICollection<GROUP> GROUPS { get; set; }
     }

@@ -105,6 +105,7 @@ namespace QLCV.Controllers
             }
             return RedirectToAction("Detail", new { id = idCongViec });
         }
+
         [RoleAnnotation(RoleId = 2)]
         public ActionResult Detail(int id)
         {
@@ -200,6 +201,7 @@ namespace QLCV.Controllers
             }
             return RedirectToAction("Detail", new { id = model.id });
         }
+
         [RoleAnnotation(RoleId = 2)]
         public string InsertBAOCAO(string idnt, string idcv, string idpc, string noidung)
         {
@@ -212,12 +214,14 @@ namespace QLCV.Controllers
             dao_task.InsertBAOCAO(bc);
             return "true";
         }
+
         [RoleAnnotation(RoleId = 2)]
         public string TiepNhanPhanCong(int idCongViec, int idPhanCong)
         {
             dao_task.UpdateTrangThaiPhanCong(idCongViec, idPhanCong);
             return "true";
         }
+
         [RoleAnnotation(RoleId = 2)]
         public string HoanThanhCongViec(int idCongViec)
         {
@@ -239,6 +243,8 @@ namespace QLCV.Controllers
             
         }
 
+        
+
         [HttpPost]
         [RoleAnnotation(RoleId = 2)]
         public Boolean Upload(HttpPostedFileBase file, string fileName)
@@ -247,26 +253,8 @@ namespace QLCV.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    ////var path = "~/App_Data/" + thumuc;
-                    //var folder = Server.MapPath("~/App_Data/" + thumuc);
-                    //if (!Directory.Exists(folder))
-                    //{
-                    //    Directory.CreateDirectory(folder);
-                    //}
-                    //string fileName = tieude + "_" + date.Day + date.Month + date.Year;
                     string extension = Path.GetExtension(file.FileName);
-                    //MyFile = Path.GetFileName(file.FileName);
-
-                    //if (System.IO.File.Exists(Server.MapPath(Path.Combine(path, Path.GetFileName(file.FileName)))))
-                    //{
-                    //    System.IO.File.Delete(Server.MapPath(Path.Combine(path, Path.GetFileName(file.FileName))));
-                    //    file.SaveAs(Server.MapPath(Path.Combine(path, Path.GetFileName(file.FileName))));
-                    //}
-                    //else
-                    //{
-                    //    file.SaveAs(Server.MapPath(Path.Combine(path, Path.GetFileName(file.FileName))));
-                    //}
-                    //string fileName = idNguoiTao.ToString() + "_" + date.Day + date.Month + date.Year + date.Hour + date.Minute + date.Second;
+ 
                     if (System.IO.File.Exists(Server.MapPath("~/App_Data/") + fileName + extension))
                     {
                         System.IO.File.Delete(Server.MapPath("~/App_Data/") + fileName + extension);

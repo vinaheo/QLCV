@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="477ef34f469f430984abe26f1e0e9cc2" Name="Diagram1">
-        <EntityTypeShape EntityType="QLCVModel.ACTION" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+      <Diagram DiagramId="0e55accb66c14a8ab764fd60333d1596" Name="Diagram1">
+        <EntityTypeShape EntityType="QLCVModel.ACTION" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.BAOCAOCONGVIEC" Width="1.5" PointX="7.5" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.BINHLUAN" Width="1.5" PointX="10.5" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QLCVModel.CHUCDANH" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />

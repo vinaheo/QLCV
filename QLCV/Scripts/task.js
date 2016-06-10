@@ -5,8 +5,14 @@ function initSelectNguoiNhan() {
     });
 }
 
-initSelectNguoiNhan();
+function initSelectAction() {
+    jQuery('.slActionNames').select2({
+        placeholder: "Select a state"
+    });
+}
 
+initSelectNguoiNhan();
+initSelectAction();
 
 $('#dataTables-example').DataTable({
     responsive: true
@@ -432,6 +438,124 @@ function UpdateNguoiDung(i) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
+            document.location.reload();
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function ResetPassword(i) {
+    $.ajax({
+        type: "POST",
+        url: "../Account/ResetPassword",
+        data: JSON.stringify({ id: i }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            alert('thanh cong');
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function ChangeTrangThai(i) {
+    $.ajax({
+        type: "POST",
+        url: "../Account/ChangeTrangThai",
+        data: JSON.stringify({ id: i }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            document.location.reload();
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function EditAction(i) {
+    $('#editActionName' + i).removeClass('hidden');
+    $('#editActionUrl' + i).removeClass('hidden');
+    $('#actionName' + i).addClass('hidden');
+    $('#actionUrl' + i).addClass('hidden');
+    $('#edit' + i).addClass('hidden');
+    $('#save' + i).removeClass('hidden');
+}
+
+function SaveAction(i) {
+    var ac = {
+        ID: i,
+        ACTIONNAME: $('#editActionName' + i).val(),
+        ACTIONURL: $('#editActionUrl' + i).val(),
+    };
+    $.ajax({
+        type: "POST",
+        url: "../Account/UpdateAction",
+        data: JSON.stringify({ ac: ac }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            alert('thanh cong');
+            document.location.reload();
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function InsertAction() {
+    var ac = {
+        ACTIONNAME: $('#actionName').val(),
+        ACTIONURL: $('#actionURL').val(),
+    };
+    $.ajax({
+        type: "POST",
+        url: "../Account/InsertAction",
+        data: JSON.stringify({ ac: ac }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            alert('thanh cong');
+            document.location.reload();
+        },
+        failure: function (response) {
+            alert('khong thanh cong');
+        }
+    });
+}
+
+function InsertGroup() {
+
+    var acs = [];
+    $("#taActionNames option").each(function () {
+        // log the value and text of each option
+        //console.log($(this).val());
+        //console.log($(this).text());
+        var ac = {
+            ID: $('this').val(),
+        ACTIONNAME: $('this').val(),
+        }
+        
+        acs.push(ac);
+    });
+    var gr = {
+        ACTIONNAME: $('#actionName').val(),
+        ACTIONURL: $('#actionURL').val(),
+    };
+    $.ajax({
+        type: "POST",
+        url: "../Account/InsertAction",
+        data: JSON.stringify({ gr: gr }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            alert('thanh cong');
             document.location.reload();
         },
         failure: function (response) {

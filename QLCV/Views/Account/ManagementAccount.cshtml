@@ -10,25 +10,7 @@
             <h1 class="page-header">Quản lý người dùng</h1>
         </div>
     </div>
-    @*<div class="row">
-            <div class="col-lg-12">
-                <div class="input-group custom-search-form">
-                    <select id="slId" multiple="multiple" class="form-control slNguoiNhans" style="width: 100%">
-                        <option value="1">Quan</option>
-                        <option value="2">Quan</option>
-                        <option value="3">Quan</option>
-                    </select>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" onclick="FilterTask()">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-
-        </div>
-        <br />*@
-
+    
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -103,6 +85,7 @@
                                     <th>Tên đăng nhập</th>
                                     <th>Tên người dùng</th>
                                     <th>Email</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,11 +93,25 @@
                                     List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
                                     foreach (NGUOIDUNG nd in nds)
                                     {
-                                        <tr data-toggle="modal" data-target="#modalNguoiDung@(nd.ID)">
-                                            <td>@nd.ID</td>
-                                            <td>@nd.TENDANGNHAP</td>
-                                            <td>@nd.TENNGUOIDUNG</td>
-                                            <td>@nd.EMAIL</td>
+                                        <tr >
+                                            <td data-toggle="modal" data-target="#modalNguoiDung@(nd.ID)">@nd.ID</td>
+                                            <td data-toggle="modal" data-target="#modalNguoiDung@(nd.ID)">@nd.TENDANGNHAP</td>
+                                            <td data-toggle="modal" data-target="#modalNguoiDung@(nd.ID)">@nd.TENNGUOIDUNG</td>
+                                            <td data-toggle="modal" data-target="#modalNguoiDung@(nd.ID)">@nd.EMAIL</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" id="btnResetPassword@(nd.ID)" onclick="ResetPassword(@nd.ID)">Reset password</button>
+                                                @{
+                                        if (nd.TRANGTHAI == true)
+                                        {
+                                            <button type="button" class="btn btn-success" id="btnTrangThai@(nd.ID)" onclick="ChangeTrangThai(@nd.ID)">Khoa nguoi dung</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-success" id="btnTrangThai@(nd.ID)" onclick="ChangeTrangThai(@nd.ID)">Mo khoa nguoi dung</button>
+                                        }
+}
+                                                
+                                            </td>
                                             <!-- Modal -->
                                         </tr>
                                         <div id="modalNguoiDung@(nd.ID)" class="modal fade" role="dialog">

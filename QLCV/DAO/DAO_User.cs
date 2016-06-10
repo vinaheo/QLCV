@@ -84,7 +84,9 @@ namespace QLCV.DAO
                 nd.TENNGUOIDUNG = updateND.TENNGUOIDUNG;
                 nd.EMAIL = updateND.EMAIL;
                 nd.IDPHONGBAN = updateND.IDPHONGBAN;
+                nd.TRANGTHAI = updateND.TRANGTHAI;
                 nd.IDGROUP = updateND.IDGROUP;
+                nd.MATKHAU = updateND.MATKHAU;
                 e.SaveChanges();
             }
         }

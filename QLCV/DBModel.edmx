@@ -10,7 +10,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ACTION" Type="nvarchar(max)" />
+          <Property Name="ACTIONNAME" Type="nvarchar(max)" />
+          <Property Name="ACTIONURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="BAOCAOCONGVIEC">
           <Key>
@@ -426,7 +427,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ACTION1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIONNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIONURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="GROUPS" Relationship="Self.GROUP_ACTION" FromRole="ACTIONS" ToRole="GROUPS" />
         </EntityType>
         <EntityType Name="BAOCAOCONGVIEC">
@@ -839,7 +841,8 @@
             <EntityTypeMapping TypeName="QLCVModel.ACTION">
               <MappingFragment StoreEntitySet="ACTIONS">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ACTION1" ColumnName="ACTION" />
+                <ScalarProperty Name="ACTIONNAME" ColumnName="ACTIONNAME" />
+                <ScalarProperty Name="ACTIONURL" ColumnName="ACTIONURL" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

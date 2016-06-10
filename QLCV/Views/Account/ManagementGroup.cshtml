@@ -1,0 +1,112 @@
+﻿@using QLCV.DAO
+@{
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Quản lý Groups</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalAddGroup">Tạo mới</button>
+                    <!-- Modal -->
+                    <div id="modalAddGroup" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Tạo mới Group</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Tên group: </label>
+                                            <input type="text" class="form-control" id="groupName">
+                                        </div>
+                                        <div>
+                                            <select id="taActionNames" multiple="multiple" class="form-control slActionNames" style="width: 100%">
+                                                <!--The following blank option must be added to allow select2 to set the placeholder text-->
+                                                @{
+                                                    DAO_Group dao_group = new DAO_Group();
+                                                    List<ACTION> acs = dao_group.GetActions();
+                                                    foreach (ACTION ac in acs)
+                                                    {
+                                                        <option value="@ac.ID">@ac.ACTIONNAME</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" onclick="InsertGroup()">Tạo</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên group</th>
+                                    <th>Action</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+
+                                    List<GROUP> groups = dao_group.GetGroups();
+                                    foreach (GROUP group in groups)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label id="groupId@(group.ID)">@group.ID</label>
+                                            </td>
+                                            <td>
+                                                <label id="groupName@(group.ID)">@group.TENGROUP</label>
+                                                <input value="@group.TENGROUP" id="groupName@(group.ID)" class="hidden" />
+                                            </td>
+                                            <td>
+                                                @{
+                                        List<string> actionNames = new List<string>();
+                                        foreach (ACTION ac in group.ACTIONS)
+                                        {
+                                            actionNames.Add(ac.ACTIONNAME);
+                                        }
+                                        string names = string.Join(",", actionNames);
+
+                                                }
+                                                <label id="actionNames@(group.ID)">
+                                                    @names
+                                                </label>
+
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-default" onclick="EditGroup(@group.ID)" id="edit@(group.ID)">Edit</button>
+                                                <button type="button" class="btn btn-default hidden" onclick="SaveGroup(@group.ID)" id="save@(group.ID)">Save</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

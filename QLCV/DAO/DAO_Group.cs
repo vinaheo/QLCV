@@ -27,5 +27,52 @@ namespace QLCV.DAO
                 return result;
             }
         }
+
+        public List<ACTION> GetActions()
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.ACTIONS.ToList();
+                return result;
+            }
+        }
+
+        public void UpdateAction(ACTION ac)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.ACTIONS.Find(ac.ID);
+                result.ACTIONNAME = ac.ACTIONNAME;
+                result.ACTIONURL = ac.ACTIONURL;
+                e.SaveChanges();
+            }
+        }
+
+        public void InsertAction(ACTION ac)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                e.ACTIONS.Add(ac);
+                e.SaveChanges();
+            }
+        }
+
+        public List<GROUP> GetGroups()
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                var result = e.GROUPS.Include("ACTIONS").ToList();
+                return result;
+            }
+        }
+
+        public void InsertGroup(GROUP gr)
+        {
+            using (QLCVEntities e = new QLCVEntities())
+            {
+                e.GROUPS.Add(gr);
+                e.SaveChanges();
+            }
+        }
     }
 }
