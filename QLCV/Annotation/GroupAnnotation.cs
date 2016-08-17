@@ -1,43 +1,79 @@
 ﻿using QLCV.DAO;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace QLCV.Annotation
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class GroupAnnotation : BaseAuthorizeAnnotation
     {
-        DAO_Group dao_group = new DAO_Group();
         public string Action { get; set; }
+
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            if (HttpContext.Current.Session["USER"] == null)
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                {
+                    controller = "Account",
+                    action = "Login"
+                }));
+            }
+            else
+            {
+                DAO_Group dao_group = new DAO_Group();
+                var session = HttpContext.Current.Session["USER"] as NGUOIDUNG;
+                List<GROUP> GroupAction = dao_group.GetGroupContainAction(Action);
+                if (!GroupAction.Any(x => x.ID == session.IDGROUP))
+                {
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                    {
+                        controller = "Home",
+                        action = "ErrorPage",
+                        message = ConfigurationManager.AppSettings["PermissionError"]
+                    }));
+                }
+                
+            }
+            
+        }
+
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var result = false;
-            var session = HttpContext.Current.Session["USER"] as NGUOIDUNG;
-            List<GROUP> GroupUser = dao_group.GetGroupContainUser(session.ID);
-            List<GROUP> GroupAction = dao_group.GetGroupContainAction(Action);
-            //if (GroupUser.SequenceEqual(GroupAction))
-            //{
-            //    result = true;
-            //}
-            foreach (GROUP gUser in GroupUser)
+            using (var context = new QLCVEntities())
             {
-                foreach (GROUP gAction in GroupAction)
+                var dao_group = new DAO_Group(context);
+                var result = false;
+                var session = HttpContext.Current.Session["USER"] as NGUOIDUNG;
+                List<GROUP> GroupUser = dao_group.GetGroupContainUser(session.ID);
+                List<GROUP> GroupAction = dao_group.GetGroupContainAction(Action);
+                //if (GroupUser.SequenceEqual(GroupAction))
+                //{
+                //    result = true;
+                //}
+                foreach (GROUP gUser in GroupUser)
                 {
-                    if (gUser.ID == gAction.ID)
+                    foreach (GROUP gAction in GroupAction)
                     {
-                        result = true;
-                        break;
+                        if (gUser.ID == gAction.ID)
+                        {
+                            result = true;
+                            break;
+                        }
                     }
                 }
+                //var a = GroupUser.SequenceEqual(GroupAction);
+
+                //var share = GroupUser.Intersect(GroupAction).Any();
+                //if (GroupUser.Distinct().Count() > share || GroupAction.Distinct().Count() > share)
+                return result;
             }
-            //var a = GroupUser.SequenceEqual(GroupAction);
-            
-            //var share = GroupUser.Intersect(GroupAction).Any();
-            //if (GroupUser.Distinct().Count() > share || GroupAction.Distinct().Count() > share)
-            return result;
+
         }
     }
 }

@@ -11,6 +11,12 @@ namespace QLCV.Annotation
     public class RoleAnnotation : BaseAuthorizeAnnotation
     {
         public int RoleId { get; set; }
+
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            base.OnAuthorization(filterContext);
+        }
+
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var result = false;

@@ -1,0 +1,16 @@
+﻿@using DayPilot.Web.Mvc.Events.Month;
+@using DayPilot.Web.Mvc.Enums;
+
+@{
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+<div id="page-wrapper">
+
+    @*@Html.DayPilotMonth("dpc", new DayPilotMonthConfig
+  {
+      BackendUrl = Url.Action("Backend", "Report")      
+  })*@
+    <div style="height:700px;width:900px;margin:0 auto">
+        @Html.Raw(Model.Render())
+    </div>
+</div>

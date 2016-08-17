@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="QLCVModelStoreContainer" CdmEntityContainer="QLCVEntities">
+    <EntitySetMapping Name="ACTIONS">
+      <EntityTypeMapping TypeName="QLCVModel.ACTION">
+        <MappingFragment StoreEntitySet="ACTIONS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ACTIONNAME" ColumnName="ACTIONNAME" />
+          <ScalarProperty Name="ACTIONURL" ColumnName="ACTIONURL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BAOCAOCONGVIECs">
+      <EntityTypeMapping TypeName="QLCVModel.BAOCAOCONGVIEC">
+        <MappingFragment StoreEntitySet="BAOCAOCONGVIEC">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="IDNGUOITAO" ColumnName="IDNGUOITAO" />
+          <ScalarProperty Name="IDCONGVIEC" ColumnName="IDCONGVIEC" />
+          <ScalarProperty Name="IDPHANCONG" ColumnName="IDPHANCONG" />
+          <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BINHLUANs">
+      <EntityTypeMapping TypeName="QLCVModel.BINHLUAN">
+        <MappingFragment StoreEntitySet="BINHLUAN">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="IDNGUOITAO" ColumnName="IDNGUOITAO" />
+          <ScalarProperty Name="IDCONGVIEC" ColumnName="IDCONGVIEC" />
+          <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="NGAYCAPNHAT" ColumnName="NGAYCAPNHAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CHUCDANHs">
+      <EntityTypeMapping TypeName="QLCVModel.CHUCDANH">
+        <MappingFragment StoreEntitySet="CHUCDANH">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TENCHUCDANH" ColumnName="TENCHUCDANH" />
+          <ScalarProperty Name="TENVIETTAT" ColumnName="TENVIETTAT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CHUCVUs">
+      <EntityTypeMapping TypeName="QLCVModel.CHUCVU">
+        <MappingFragment StoreEntitySet="CHUCVU">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TENCHUCVU" ColumnName="TENCHUCVU" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CONGVIECs">
+      <EntityTypeMapping TypeName="QLCVModel.CONGVIEC">
+        <MappingFragment StoreEntitySet="CONGVIEC">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="IDNGUOITAO" ColumnName="IDNGUOITAO" />
+          <ScalarProperty Name="TIEUDE" ColumnName="TIEUDE" />
+          <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+          <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="HOANTHANH" ColumnName="HOANTHANH" />
+          <ScalarProperty Name="IDDANGCONGVIEC" ColumnName="IDDANGCONGVIEC" />
+          <ScalarProperty Name="NGAYCAPNHAT" ColumnName="NGAYCAPNHAT" />
+          <ScalarProperty Name="XOA" ColumnName="XOA" />
+          <ScalarProperty Name="PARENTID" ColumnName="PARENTID" />
+          <ScalarProperty Name="TAPTIN" ColumnName="TAPTIN" />
+          <ScalarProperty Name="THUMUC" ColumnName="THUMUC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DANGCONGVIECs">
+      <EntityTypeMapping TypeName="QLCVModel.DANGCONGVIEC">
+        <MappingFragment StoreEntitySet="DANGCONGVIEC">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TEN" ColumnName="TEN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DANGPHANCONGs">
+      <EntityTypeMapping TypeName="QLCVModel.DANGPHANCONG">
+        <MappingFragment StoreEntitySet="DANGPHANCONG">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TEN" ColumnName="TEN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GROUPS">
+      <EntityTypeMapping TypeName="QLCVModel.GROUP">
+        <MappingFragment StoreEntitySet="GROUPS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TENGROUP" ColumnName="TENGROUP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NGUOIDUNGs">
+      <EntityTypeMapping TypeName="QLCVModel.NGUOIDUNG">
+        <MappingFragment StoreEntitySet="NGUOIDUNG">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TENDANGNHAP" ColumnName="TENDANGNHAP" />
+          <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
+          <ScalarProperty Name="TENNGUOIDUNG" ColumnName="TENNGUOIDUNG" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+          <ScalarProperty Name="NGAYTAO" ColumnName="NGAYTAO" />
+          <ScalarProperty Name="IDPHONGBAN" ColumnName="IDPHONGBAN" />
+          <ScalarProperty Name="IDCHUCDANH" ColumnName="IDCHUCDANH" />
+          <ScalarProperty Name="IDCHUCVU" ColumnName="IDCHUCVU" />
+          <ScalarProperty Name="IDGROUP" ColumnName="IDGROUP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PHANCONGs">
+      <EntityTypeMapping TypeName="QLCVModel.PHANCONG">
+        <MappingFragment StoreEntitySet="PHANCONG">
+          <ScalarProperty Name="IDPHANCONG" ColumnName="IDPHANCONG" />
+          <ScalarProperty Name="IDNGUOINHAN" ColumnName="IDNGUOINHAN" />
+          <ScalarProperty Name="IDCONGVIEC" ColumnName="IDCONGVIEC" />
+          <ScalarProperty Name="TENPHANCONG" ColumnName="TENPHANCONG" />
+          <ScalarProperty Name="IDTRANGTHAI" ColumnName="IDTRANGTHAI" />
+          <ScalarProperty Name="IDDANGPHANCONG" ColumnName="IDDANGPHANCONG" />
+          <ScalarProperty Name="NOIDUNG" ColumnName="NOIDUNG" />
+          <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
+          <ScalarProperty Name="NGAYCAPNHAT" ColumnName="NGAYCAPNHAT" />
+          <ScalarProperty Name="NGAYBATDAU" ColumnName="NGAYBATDAU" />
+          <ScalarProperty Name="NGAYKETTHUC" ColumnName="NGAYKETTHUC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PHONGBANs">
+      <EntityTypeMapping TypeName="QLCVModel.PHONGBAN">
+        <MappingFragment StoreEntitySet="PHONGBAN">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TENPHONG" ColumnName="TENPHONG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TRANGTHAIs">
+      <EntityTypeMapping TypeName="QLCVModel.TRANGTHAI">
+        <MappingFragment StoreEntitySet="TRANGTHAI">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TEN" ColumnName="TEN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="GROUP_ACTION" TypeName="QLCVModel.GROUP_ACTION" StoreEntitySet="GROUP_ACTION">
+      <EndProperty Name="ACTIONS">
+        <ScalarProperty Name="ID" ColumnName="IDACTION" />
+      </EndProperty>
+      <EndProperty Name="GROUPS">
+        <ScalarProperty Name="ID" ColumnName="IDGROUP" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

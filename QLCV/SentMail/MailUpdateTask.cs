@@ -17,7 +17,7 @@ namespace QLCV.SentMail
             using (MailMessage mailMessage = new MailMessage())
             {
                 mailMessage.From = new MailAddress(ConfigurationManager.AppSettings["UserName"]);
-                mailMessage.Subject = "Công việc được cập nhật";
+                mailMessage.Subject = ConfigurationManager.AppSettings["MailUpdateTask"];
                 mailMessage.Body = Body(nguoicapnhat, tieude);
                 mailMessage.IsBodyHtml = true;
                 mailMessage.To.Add(new MailAddress(nguoinhan));

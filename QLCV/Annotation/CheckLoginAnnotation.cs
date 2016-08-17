@@ -11,17 +11,7 @@ namespace QLCV.Annotation
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CheckLoginAnnotation : AuthorizeAttribute
     {
-        //protected override bool AuthorizeCore(HttpContextBase httpContext)
-        //{
-        //    if (HttpContext.Current.Session["USER"] == null)
-        //    {
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        return true;
-        //    }
-        //}
+
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             if (HttpContext.Current.Session["USER"] == null)

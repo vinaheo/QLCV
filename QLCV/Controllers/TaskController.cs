@@ -9,20 +9,29 @@ using System.Configuration;
 using System.IO;
 using QLCV.Annotation;
 using QLCV.SentMail;
+using Microsoft.AspNet.SignalR;
+using QLCV.Utility;
 
 namespace QLCV.Controllers
 {
     public class TaskController : BaseController
     {
-        
-        DAO_Task dao_task = new DAO_Task();
-        DAO_User dao_user = new DAO_User();
+        private DAO_Task dao_task;
+        private DAO_User dao_user;
+        private DAO_Group dao_group;
+        private QLCVEntities _context;
+
+        public TaskController()
+        {
+            _context = new QLCVEntities();
+            dao_group = new DAO_Group(_context);
+            dao_user = new DAO_User(_context);
+            dao_task = new DAO_Task(_context);
+        }
+
         MailInsertTask mailInsertTask = new MailInsertTask();
         MailUpdateTask mailUpdateTask = new MailUpdateTask();
 
-        //
-        // GET: /Task/
-        [RoleAnnotation(RoleId = 2)]
         public ActionResult Index(int idFilter)
         {
             ViewBag.idFilter = idFilter;
@@ -30,83 +39,105 @@ namespace QLCV.Controllers
         }
 
         [HttpGet]
-        [RoleAnnotation(RoleId = 2)]
-        //[GroupAnnotation(Action="~/Task/Insert")]
-        //[Authorize]
+        [GroupAnnotation(Action = "~/Task/Insert")]
         public ActionResult Insert()
         {
-            if (ModelState.IsValid)
-            {
-                List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
-                ViewBag.NDs = nds;
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            
+            List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+            ViewBag.NDs = nds;
+            return View();
         }
 
         [HttpPost]
-        [RoleAnnotation(RoleId = 2)]
+        [GroupAnnotation(Action = "~/Task/Insert")]
         public ActionResult Insert(TaskInsertViewModel model)
         {
-            if (model.numPC == 0)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Error", "Ex: This login failed");
-                return RedirectToAction("Insert");
-            }
-            CONGVIEC cv = new CONGVIEC();
-            cv.TIEUDE = model.tieude;
-            cv.NOIDUNG = model.noidung;
-            cv.IDNGUOITAO = model.idNguoiTao ;
-            cv.NGAYTAO = DateTime.Now;
-            cv.HOANTHANH = false;
-            cv.XOA = false;
-            string extension = "";
-            if (model.taptin != null)
-            {
-                cv.TAPTIN = model.taptin.FileName;
-                extension = Path.GetExtension(model.taptin.FileName);
-            }
-            
-            //cv.THUMUC = "1_" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second +extension;
-            List<PHANCONG> pcs = new List<PHANCONG>();
-            for (int i = 0; i < model.numPC; i++)
-            {
-                string[] idNguoiNhans = model.listIDNguoiNhans[i].ToString().Split(',');
-                foreach (string id in idNguoiNhans)
+                try
                 {
-                    PHANCONG pc = new PHANCONG();
-                    pc.IDPHANCONG = i;
-                    pc.TENPHANCONG = model.pcs[i].TENPHANCONG;
-                    pc.NOIDUNG = model.pcs[i].NOIDUNG;
-                    pc.IDNGUOINHAN = int.Parse(id);
-                    pc.NGAYBATDAU = model.pcs[i].NGAYBATDAU;
-                    pc.NGAYKETTHUC = model.pcs[i].NGAYKETTHUC;
-                    pc.IDTRANGTHAI = 1;
-                    pcs.Add(pc);
+                    if (model.numPC == 0)
+                    {
+                        List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+                        ViewBag.NDs = nds;
+                        ViewBag.Message = "Phải có phân công";
+                        return View();
+                    }
+                    CONGVIEC cv = new CONGVIEC();
+                    cv.TIEUDE = model.tieude;
+                    cv.NOIDUNG = model.noidung;
+                    cv.IDNGUOITAO = model.idNguoiTao;
+                    cv.NGAYTAO = DateTime.Now;
+                    cv.NGAYCAPNHAT = DateTime.Now;
+                    cv.HOANTHANH = false;
+                    cv.XOA = false;
+                    string extension = "";
+                    if (model.taptin != null)
+                    {
+                        cv.TAPTIN = model.taptin.FileName;
+                        extension = Path.GetExtension(model.taptin.FileName);
+                    }
+
+                    List<PHANCONG> pcs = new List<PHANCONG>();
+                    for (int i = 0; i < model.numPC; i++)
+                    {
+                        string[] idNguoiNhans = model.listIDNguoiNhans[i].ToString().Split(',');
+                        foreach (string id in idNguoiNhans)
+                        {
+                            PHANCONG pc = new PHANCONG();
+                            pc.IDPHANCONG = i;
+                            pc.TENPHANCONG = model.pcs[i].TENPHANCONG;
+                            pc.NOIDUNG = model.pcs[i].NOIDUNG;
+                            pc.IDNGUOINHAN = int.Parse(id);
+                            pc.NGAYBATDAU = model.pcs[i].NGAYBATDAU;
+                            pc.NGAYKETTHUC = model.pcs[i].NGAYKETTHUC;
+                            
+                            pc.IDTRANGTHAI = 1;
+                            pcs.Add(pc);
+                        }
+                    }
+                    //Upload(model.taptin, DateTime.Now, 1);
+                    cv.PHANCONGs = pcs;
+                    int idCongViec = dao_task.InsertTask(cv);
+                    if (model.taptin != null)
+                    {
+                        string fileName = idCongViec.ToString() + "_" + cv.NGAYTAO.GetValueOrDefault().Day + cv.NGAYTAO.GetValueOrDefault().Month + cv.NGAYTAO.GetValueOrDefault().Year + cv.NGAYTAO.GetValueOrDefault().Hour + cv.NGAYTAO.GetValueOrDefault().Minute + cv.NGAYTAO.GetValueOrDefault().Second;
+                        Upload(model.taptin, fileName);
+                        dao_task.UpdateTaskAfterInsert(idCongViec, fileName + extension);
+                    }
+                    List<int> listNguoiDungTrongCongViec = dao_task.GetNGuoiDungTrongCongViec(idCongViec);
+                    //foreach (int idND in listNguoiDungTrongCongViec.Distinct())
+                    //{
+                    //    mailInsertTask.DoSentMail(dao_user.GetNguoiDungById(cv.IDNGUOITAO.GetValueOrDefault()).TENNGUOIDUNG, cv.TIEUDE, dao_user.GetNguoiDungById(idND).EMAIL);
+                    //}
+
+                    var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                    foreach (string IDNguoiNhan in model.listIDNguoiNhans)
+                    {
+                        string[] idNguoiNhans = IDNguoiNhan.ToString().Split(',');
+                        foreach (string i in idNguoiNhans)
+                        {
+                            hubContext.Clients.All.Send("Bạn có công việc mới!", i);
+                        }
+                    }
+                    //hubContext.Clients.All.Send("Bạn có công việc mới!");
+                    return RedirectToAction("Detail", new { id = idCongViec });
+                }
+                catch (Exception ex)
+                {
+                    //return ex.;
+                    //return RedirectToAction("ErrorPage", "Home", new { message = ex});
+                    return RedirectToAction("ErrorPage", "Home", new { message = ConfigurationManager.AppSettings["DatabaseError"] });
                 }
             }
-            //Upload(model.taptin, DateTime.Now, 1);
-            cv.PHANCONGs = pcs;
-            int idCongViec = dao_task.InsertTask(cv);
-            if (model.taptin != null)
+            else
             {
-                string fileName = idCongViec.ToString() + "_" + cv.NGAYTAO.GetValueOrDefault().Day + cv.NGAYTAO.GetValueOrDefault().Month + cv.NGAYTAO.GetValueOrDefault().Year + cv.NGAYTAO.GetValueOrDefault().Hour + cv.NGAYTAO.GetValueOrDefault().Minute + cv.NGAYTAO.GetValueOrDefault().Second;
-                Upload(model.taptin, fileName);
-                dao_task.UpdateTaskAfterInsert(idCongViec, fileName + extension);
+                List<NGUOIDUNG> nds = dao_user.GetNGUOIDUNGs();
+                ViewBag.NDs = nds;
+                return View(model);
+                //return RedirectToAction("ErrorPage", "Home", new { message = ConfigurationManager.AppSettings["DatabaseError"] });
             }
-            List<int> listNguoiDungTrongCongViec = dao_task.GetNGuoiDungTrongCongViec(idCongViec);
-            foreach (int idND in listNguoiDungTrongCongViec.Distinct())
-            {
-                mailInsertTask.DoSentMail(dao_user.GetNguoiDungById(cv.IDNGUOITAO.GetValueOrDefault()).TENNGUOIDUNG, cv.TIEUDE, dao_user.GetNguoiDungById(idND).EMAIL);
-            }
-            return RedirectToAction("Detail", new { id = idCongViec });
         }
 
-        [RoleAnnotation(RoleId = 2)]
         public ActionResult Detail(int id)
         {
             //CheckLoggingIn();
@@ -157,7 +188,6 @@ namespace QLCV.Controllers
         }
 
         [HttpPost]
-        [RoleAnnotation(RoleId = 2)]
         public ActionResult Edit(TaskDetailViewModel model)
         {
             CONGVIEC cv = dao_task.GetCONGVIEC(model.id);
@@ -195,14 +225,13 @@ namespace QLCV.Controllers
             List<int> listNguoiDungTrongCongViec = dao_task.GetNGuoiDungTrongCongViec(model.id);
             NGUOIDUNG userLogin = Session["USER"] as NGUOIDUNG;
 
-            foreach (int idND in listNguoiDungTrongCongViec.Distinct())
-            {
-                mailUpdateTask.DoSentMail(userLogin.TENNGUOIDUNG, cv.TIEUDE, dao_user.GetNguoiDungById(idND).EMAIL);
-            }
+            //foreach (int idND in listNguoiDungTrongCongViec.Distinct())
+            //{
+            //    mailUpdateTask.DoSentMail(userLogin.TENNGUOIDUNG, cv.TIEUDE, dao_user.GetNguoiDungById(idND).EMAIL);
+            //}
             return RedirectToAction("Detail", new { id = model.id });
         }
 
-        [RoleAnnotation(RoleId = 2)]
         public string InsertBAOCAO(string idnt, string idcv, string idpc, string noidung)
         {
             BAOCAOCONGVIEC bc = new BAOCAOCONGVIEC();
@@ -215,14 +244,12 @@ namespace QLCV.Controllers
             return "true";
         }
 
-        [RoleAnnotation(RoleId = 2)]
         public string TiepNhanPhanCong(int idCongViec, int idPhanCong)
         {
             dao_task.UpdateTrangThaiPhanCong(idCongViec, idPhanCong);
             return "true";
         }
 
-        [RoleAnnotation(RoleId = 2)]
         public string HoanThanhCongViec(int idCongViec)
         {
             List<PHANCONG> pcs = dao_task.GetPhanCongTheoCongViec(idCongViec);
@@ -240,13 +267,10 @@ namespace QLCV.Controllers
                 dao_task.UpdateTrangThaiCongViec(idCongViec);
                 return "true";
             }
-            
+
         }
 
-        
-
         [HttpPost]
-        [RoleAnnotation(RoleId = 2)]
         public Boolean Upload(HttpPostedFileBase file, string fileName)
         {
             try
@@ -254,15 +278,24 @@ namespace QLCV.Controllers
                 if (file.ContentLength > 0)
                 {
                     string extension = Path.GetExtension(file.FileName);
- 
-                    if (System.IO.File.Exists(Server.MapPath("~/App_Data/") + fileName + extension))
+
+                    //if (System.IO.File.Exists(Server.MapPath("~/App_Data/") + fileName + extension))
+                    //{
+                    //    System.IO.File.Delete(Server.MapPath("~/App_Data/") + fileName + extension);
+                    //    file.SaveAs(Server.MapPath("~/App_Data/") + fileName + extension);
+                    //}
+                    //else
+                    //{
+                    //    file.SaveAs(Server.MapPath("~/App_Data/") + fileName + extension);
+                    //}
+                    if (System.IO.File.Exists(ConfigurationManager.AppSettings["FolderUpload"] + fileName + extension))
                     {
-                        System.IO.File.Delete(Server.MapPath("~/App_Data/") + fileName + extension);
-                        file.SaveAs(Server.MapPath("~/App_Data/") + fileName + extension);
+                        System.IO.File.Delete(ConfigurationManager.AppSettings["FolderUpload"] + fileName + extension);
+                        file.SaveAs(ConfigurationManager.AppSettings["FolderUpload"] + fileName + extension);
                     }
                     else
                     {
-                        file.SaveAs(Server.MapPath("~/App_Data/") + fileName + extension);
+                        file.SaveAs(ConfigurationManager.AppSettings["FolderUpload"] + fileName + extension);
                     }
                     return true;
                 }
@@ -277,10 +310,30 @@ namespace QLCV.Controllers
             }
         }
 
-        [RoleAnnotation(RoleId = 2)]
         public FileResult Download(string file)
         {
-            return File(Server.MapPath("~/App_Data/") + file, System.Net.Mime.MediaTypeNames.Application.Octet, file);
+            return File(ConfigurationManager.AppSettings["FolderUpload"] + file, System.Net.Mime.MediaTypeNames.Application.Octet, file);
         }
+
+        #region Dispose pattern
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Free any other managed objects here.
+                //
+                if (_context != null)
+                    _context.Dispose();
+            }
+
+            // Free any unmanaged objects here.
+            //
+
+            // Call the base class implementation.
+            base.Dispose(disposing);
+        }
+
+        #endregion
     }
 }
